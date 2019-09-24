@@ -3,4 +3,5 @@ class Library < ApplicationRecord
   validates :name, :presence => true
   validates :university, :presence => true
   validates :location, :presence => true
+  validates :max_days, :presence => true
 end
