@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_21_004422) do
+ActiveRecord::Schema.define(version: 2019_09_24_051122) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -30,6 +30,10 @@ ActiveRecord::Schema.define(version: 2019_09_21_004422) do
   create_table "libraries", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "university"
+    t.string "location"
+    t.integer "max_days"
   end
 
   create_table "students", force: :cascade do |t|
