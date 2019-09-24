@@ -4,13 +4,13 @@ class LibrariesController < ApplicationController
   # GET /libraries
   # GET /libraries.json
   def index
-    if(User.find(current_user.id).user_type == 1)
-      @libraries = Library.all
-    elsif User.find(current_user.id).user_type == 2
-      @libraries = Library.all.where(user_id: current_user.id)
-    elsif User.find(current_user.id).user_type == 3
-      @libraries = Library.all.where(tour_id: Tour.all.where(user_id: current_user.id))
-    end
+    # if(User.find(current_user.id).user_type == 1)
+    @libraries = Library.all
+    # elsif User.find(current_user.id).user_type == 2
+    #   @libraries = Library.all.where(user_id: current_user.id)
+    # elsif User.find(current_user.id).user_type == 3
+    #   @libraries = Library.all.where(user_id: Library.all.where(user_id: current_user.id))
+    # end
   end
 
   # GET /libraries/1
