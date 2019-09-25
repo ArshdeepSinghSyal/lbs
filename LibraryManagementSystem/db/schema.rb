@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_24_051122) do
+ActiveRecord::Schema.define(version: 2019_09_25_213226) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -33,7 +33,9 @@ ActiveRecord::Schema.define(version: 2019_09_24_051122) do
     t.string "name"
     t.string "university"
     t.string "location"
-    t.integer "max_days"
+    t.string "max_days_undergrad"
+    t.string "max_days_grad"
+    t.string "max_days_phd"
   end
 
   create_table "students", force: :cascade do |t|
