@@ -4,12 +4,22 @@ class BooksController < ApplicationController
   # GET /books
   # GET /books.json
   def index
-    @books = Book.all
+    if params[:search]
+      @books = Book.search(params)
+    else
+      @books = Book.all
+    end
   end
 
   # GET /books/1
   # GET /books/1.json
   def show
+    @book = Book.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @book }
+    end
   end
 
   # GET /books/new
@@ -69,6 +79,7 @@ class BooksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def book_params
-      params.fetch(:book, {})
+      # params.fetch(:book, {})
+      params.require(:book).permit(:isbn, :title, :author, :language, :published, :edition, :image, :subject, :summary, :is_special_collection_item, :search)
     end
 end
