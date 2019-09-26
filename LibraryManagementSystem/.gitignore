@@ -29,4 +29,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+<<<<<<< HEAD
 .idea
+=======
+.idea
+>>>>>>> 943d2033d81829d040e941869b2c2ee63092f3b1
