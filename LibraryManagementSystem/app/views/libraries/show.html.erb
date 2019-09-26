@@ -1,4 +1,34 @@
 <p id="notice"><%= notice %></p>
 
+<p>
+  <b>Name:</b>
+  <%= @library.name %>
+</p>
+
+<p>
+  <b>University:</b>
+  <%= @library.university %>
+</p>
+
+<p>
+  <b>Location (on campus):</b>
+  <%= @library.location %>
+</p>
+
+<p>
+  <b>Max Allowed Days for Undergraduate Students:</b>
+  <%= @library.max_days_undergrad %>
+</p>
+
+<p>
+  <b>Max Allowed Days for Graduate Students:</b>
+  <%= @library.max_days_grad %>
+</p>
+
+<p>
+  <b>Max Allowed Days for PHD Students:</b>
+  <%= @library.max_days_phd %>
+</p>
+
 <%= link_to 'Edit', edit_library_path(@library) %> |
 <%= link_to 'Back', libraries_path %>

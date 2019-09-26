@@ -11,6 +11,36 @@
     </div>
   <% end %>
 
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :university %>
+    <%= form.text_field :university %>
+  </div>
+
+  <div class="field">
+    <%= form.label :location %>
+    <%= form.text_field :location %>
+  </div>
+
+  <div class="field">
+    <%= form.label :max_days_undergrad %>
+    <%= form.number_field :max_days_undergrad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :max_days_grad %>
+    <%= form.number_field :max_days_grad %>
+  </div>
+
+  <div class="field">
+    <%= form.label :max_days_phd %>
+    <%= form.number_field :max_days_phd %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>

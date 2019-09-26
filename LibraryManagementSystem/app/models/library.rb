@@ -1,2 +1,9 @@
 class Library < ApplicationRecord
+  attr_accessor :option
+  validates :name, :presence => true
+  validates :university, :presence => true
+  validates :location, :presence => true
+  validates :max_days_undergrad, :presence => true, :numericality => { :greater_than_or_equal_to => 0 }
+  validates :max_days_grad, :presence => true, :numericality => { :greater_than_or_equal_to => 0 }
+  validates :max_days_phd, :presence => true, :numericality => { :greater_than_or_equal_to => 0 }
 end
