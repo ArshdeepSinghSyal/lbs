@@ -20,6 +20,16 @@ ActiveRecord::Schema.define(version: 2019_09_25_213226) do
   create_table "books", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "isbn"
+    t.string "title"
+    t.string "language"
+    t.date "published"
+    t.float "edition"
+    t.binary "image"
+    t.string "subject"
+    t.text "summary"
+    t.boolean "is_special_collection_item"
+    t.string "author"
   end
 
   create_table "librarians", force: :cascade do |t|
