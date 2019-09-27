@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lib_book: one
+  user: one
+  status: 1
+  checkoutstamp: 2019-09-27 17:45:43
+  returnstamp: 2019-09-27 17:45:43
+  requeststamp: 2019-09-27 17:45:43
+
+two:
+  lib_book: two
+  user: two
+  status: 1
+  checkoutstamp: 2019-09-27 17:45:43
+  returnstamp: 2019-09-27 17:45:43
+  requeststamp: 2019-09-27 17:45:43
