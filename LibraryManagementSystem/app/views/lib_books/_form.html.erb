@@ -1,0 +1,34 @@
+<%= form_with(model: lib_book, local: true) do |form| %>
+  <% if lib_book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(lib_book.errors.count, "error") %> prohibited this lib_book from being saved:</h2>
+
+      <ul>
+      <% lib_book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :library_id %>
+    <%= select("lib_book", "library_id", Library.all.collect{ |c| [ c.name, c.id] })  %>
+    <%#= form.text_field :library_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :book_id %>
+    <%= select("lib_book", "book_id", Book.all.collect{ |c| [ c.title, c.id] })  %>
+    <%#= form.text_field :book_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :quantity %>
+    <%= form.number_field :quantity %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
