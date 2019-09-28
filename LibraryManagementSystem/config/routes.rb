@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :users
   resources :books
   resources :libraries do
-    resources :lib_books
+    resources :lib_books, :reservations
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'users#index'

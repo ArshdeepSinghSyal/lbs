@@ -24,9 +24,13 @@
         <td><%= reservation.checkoutstamp %></td>
         <td><%= reservation.returnstamp %></td>
         <td><%= reservation.requeststamp %></td>
-        <td><%= link_to 'Show', reservation %></td>
-        <td><%= link_to 'Edit', edit_reservation_path(reservation) %></td>
-        <td><%= link_to 'Destroy', reservation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+<!--        <td><%#= link_to 'Show', reservation %></td>-->
+<!--        <td><%#= link_to 'Edit', edit_reservation_path(reservation) %></td>-->
+<!--        <td><%#= link_to 'Destroy', reservation, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
+        <td><%= link_to 'Show', library_reservation_path(@library, reservation) %></td>
+        <td><%= link_to 'Edit', edit_library_reservation_path(@library, reservation) %></td>
+        <td><%= link_to 'Destroy', library_reservation_path(@library, reservation), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
       </tr>
     <% end %>
   </tbody>
@@ -34,4 +38,5 @@
 
 <br>
 
-<%= link_to 'New Reservation', new_reservation_path %>
+<%= link_to 'New Reservation', new_library_reservation_path %>
+<%= link_to 'Back', library_path(@library) %>

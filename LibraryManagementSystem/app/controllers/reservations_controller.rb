@@ -1,10 +1,17 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
+  before_action(:get_library)
 
   # GET /reservations
   # GET /reservations.json
   def index
-    @reservations = Reservation.all
+    @reservations = []
+    @library.lib_books.each do |lib_book|
+      lib_book.reservations.each do |reservation|
+        @reservations.push(reservation)
+      end
+    end
+    # @library.lib_books
   end
 
   # GET /reservations/1
@@ -28,7 +35,7 @@ class ReservationsController < ApplicationController
 
     respond_to do |format|
       if @reservation.save
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully created.' }
+        format.html { redirect_to library_reservations_path, notice: 'Reservation was successfully created.' }
         format.json { render :show, status: :created, location: @reservation }
       else
         format.html { render :new }
@@ -42,7 +49,7 @@ class ReservationsController < ApplicationController
   def update
     respond_to do |format|
       if @reservation.update(reservation_params)
-        format.html { redirect_to @reservation, notice: 'Reservation was successfully updated.' }
+        format.html { redirect_to library_reservations_path, notice: 'Reservation was successfully updated.' }
         format.json { render :show, status: :ok, location: @reservation }
       else
         format.html { render :edit }
@@ -56,7 +63,7 @@ class ReservationsController < ApplicationController
   def destroy
     @reservation.destroy
     respond_to do |format|
-      format.html { redirect_to reservations_url, notice: 'Reservation was successfully destroyed.' }
+      format.html { redirect_to library_reservations_path, notice: 'Reservation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -70,5 +77,9 @@ class ReservationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def reservation_params
       params.require(:reservation).permit(:lib_book_id, :user_id, :status, :checkoutstamp, :returnstamp, :requeststamp)
+    end
+
+    def get_library
+      @library = Library.find(params[:library_id])
     end
 end
