@@ -1,4 +1,5 @@
-<%= form_with(model: lib_book, local: true) do |form| %>
+<%#= form_with(model: lib_book, local: true) do |form| %>
+<%= form_for [@library, @lib_book] do |form| %>
   <% if lib_book.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(lib_book.errors.count, "error") %> prohibited this lib_book from being saved:</h2>

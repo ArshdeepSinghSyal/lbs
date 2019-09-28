@@ -29,6 +29,7 @@
   <b>Max Allowed Days for PHD Students:</b>
   <%= @library.max_days_phd %>
 </p>
-<%= link_to 'Library Books', lib_books_url %> |
+<!--<%#= link_to 'Library Books', lib_books_url(@library) %> |-->
+<%= link_to 'My Library Books', library_lib_books_url(@library) %> |
 <%= link_to 'Edit', edit_library_path(@library) %> |
 <%= link_to 'Back', libraries_path %>
