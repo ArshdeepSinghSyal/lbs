@@ -1,6 +1,7 @@
 class LibBooksController < ApplicationController
   before_action :set_lib_book, only: [:show, :edit, :update, :destroy]
   before_action(:get_library)
+  before_action(:get_university)
 
   # GET /lib_books
   # GET /lib_books.json
@@ -29,7 +30,7 @@ class LibBooksController < ApplicationController
 
     respond_to do |format|
       if @lib_book.save
-        format.html { redirect_to library_lib_books_path, notice: 'Lib book was successfully created.' }
+        format.html { redirect_to university_library_lib_books_path, notice: 'Lib book was successfully created.' }
         format.json { render :show, status: :created, location: @lib_book }
       else
         format.html { render :new }
@@ -43,7 +44,7 @@ class LibBooksController < ApplicationController
   def update
     respond_to do |format|
       if @lib_book.update(lib_book_params)
-        format.html { redirect_to library_lib_books_path, notice: 'Lib book was successfully updated.' }
+        format.html { redirect_to university_library_lib_books_path, notice: 'Lib book was successfully updated.' }
         format.json { render :show, status: :ok, location: @lib_book }
       else
         format.html { render :edit }
@@ -57,7 +58,7 @@ class LibBooksController < ApplicationController
   def destroy
     @lib_book.destroy
     respond_to do |format|
-      format.html { redirect_to library_lib_books_path, notice: 'Lib book was successfully destroyed.' }
+      format.html { redirect_to university_library_lib_books_path, notice: 'Lib book was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -75,5 +76,9 @@ class LibBooksController < ApplicationController
 
     def get_library
       @library = Library.find(params[:library_id])
+    end
+
+    def get_university
+      @university = University.find(params[:university_id])
     end
 end

@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action(:get_library)
+  before_action(:get_university)
 
   # GET /reservations
   # GET /reservations.json
@@ -35,7 +36,7 @@ class ReservationsController < ApplicationController
 
     respond_to do |format|
       if @reservation.save
-        format.html { redirect_to library_reservations_path, notice: 'Reservation was successfully created.' }
+        format.html { redirect_to university_library_reservations_path, notice: 'Reservation was successfully created.' }
         format.json { render :show, status: :created, location: @reservation }
       else
         format.html { render :new }
@@ -49,7 +50,7 @@ class ReservationsController < ApplicationController
   def update
     respond_to do |format|
       if @reservation.update(reservation_params)
-        format.html { redirect_to library_reservations_path, notice: 'Reservation was successfully updated.' }
+        format.html { redirect_to university_library_reservations_path, notice: 'Reservation was successfully updated.' }
         format.json { render :show, status: :ok, location: @reservation }
       else
         format.html { render :edit }
@@ -63,7 +64,7 @@ class ReservationsController < ApplicationController
   def destroy
     @reservation.destroy
     respond_to do |format|
-      format.html { redirect_to library_reservations_path, notice: 'Reservation was successfully destroyed.' }
+      format.html { redirect_to university_library_reservations_path, notice: 'Reservation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -81,5 +82,9 @@ class ReservationsController < ApplicationController
 
     def get_library
       @library = Library.find(params[:library_id])
+    end
+
+    def get_university
+      @university = University.find(params[:university_id])
     end
 end
