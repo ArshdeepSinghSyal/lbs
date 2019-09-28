@@ -1,7 +1,6 @@
 class Library < ApplicationRecord
   belongs_to :university
   has_many :lib_books, dependent: :delete_all
-  # has_many :reservations, dependent: delete_all
 
   attr_accessor :option
   validates :name, :presence => true, uniqueness: true
