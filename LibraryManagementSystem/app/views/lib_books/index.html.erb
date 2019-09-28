@@ -18,9 +18,9 @@
         <td><%= Library.find(lib_book.library_id).name %></td>
         <td><%= Book.find(lib_book.book_id).title %></td>
         <td><%= lib_book.quantity %></td>
-        <td><%= link_to 'Show', lib_book %></td>
-        <td><%= link_to 'Edit', edit_lib_book_path(lib_book) %></td>
-        <td><%= link_to 'Destroy', lib_book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', library_lib_book_path(@library, lib_book) %></td>
+        <td><%= link_to 'Edit', edit_library_lib_book_path(@library, lib_book) %></td>
+        <td><%= link_to 'Destroy', library_lib_book_path(@library, lib_book), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +28,5 @@
 
 <br>
 
-<%= link_to 'New Lib Book', new_lib_book_path %>
+<%= link_to 'New Lib Book', new_library_lib_book_path %>
+<%= link_to 'Back', library_path(@library) %>
