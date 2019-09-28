@@ -14,6 +14,12 @@ class LibrariesTest < ApplicationSystemTestCase
     visit libraries_url
     click_on "New Library"
 
+    fill_in "Location", with: @library.location
+    fill_in "Max days grad", with: @library.max_days_grad
+    fill_in "Max days phd", with: @library.max_days_phd
+    fill_in "Max days undergrad", with: @library.max_days_undergrad
+    fill_in "Name", with: @library.name
+    fill_in "University", with: @library.university_id
     click_on "Create Library"
 
     assert_text "Library was successfully created"
@@ -24,6 +30,12 @@ class LibrariesTest < ApplicationSystemTestCase
     visit libraries_url
     click_on "Edit", match: :first
 
+    fill_in "Location", with: @library.location
+    fill_in "Max days grad", with: @library.max_days_grad
+    fill_in "Max days phd", with: @library.max_days_phd
+    fill_in "Max days undergrad", with: @library.max_days_undergrad
+    fill_in "Name", with: @library.name
+    fill_in "University", with: @library.university_id
     click_on "Update Library"
 
     assert_text "Library was successfully updated"

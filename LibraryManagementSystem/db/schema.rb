@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_25_224319) do
+ActiveRecord::Schema.define(version: 2019_09_28_032907) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -20,6 +20,27 @@ ActiveRecord::Schema.define(version: 2019_09_25_224319) do
   create_table "books", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title"
+    t.string "language"
+    t.date "published"
+    t.float "edition"
+    t.binary "image"
+    t.string "subject"
+    t.text "summary"
+    t.boolean "is_special_collection_item"
+    t.string "author"
+    t.string "isbn"
+    t.index ["isbn"], name: "index_books_on_isbn", unique: true
+  end
+
+  create_table "lib_books", force: :cascade do |t|
+    t.integer "library_id"
+    t.integer "book_id"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_lib_books_on_book_id"
+    t.index ["library_id"], name: "index_lib_books_on_library_id"
   end
 
   create_table "librarians", force: :cascade do |t|
@@ -28,11 +49,37 @@ ActiveRecord::Schema.define(version: 2019_09_25_224319) do
   end
 
   create_table "libraries", force: :cascade do |t|
+    t.integer "university_id"
+    t.string "location"
+    t.string "name"
+    t.integer "max_days_undergrad"
+    t.integer "max_days_grad"
+    t.integer "max_days_phd"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["university_id"], name: "index_libraries_on_university_id"
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.integer "lib_book_id"
+    t.integer "user_id"
+    t.integer "status"
+    t.datetime "checkoutstamp"
+    t.datetime "returnstamp"
+    t.datetime "requeststamp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lib_book_id"], name: "index_reservations_on_lib_book_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
+  end
+
+  create_table "students", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "students", force: :cascade do |t|
+  create_table "universities", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

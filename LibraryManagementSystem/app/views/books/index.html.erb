@@ -2,16 +2,39 @@
 
 <h1>Books</h1>
 
+<%= form_tag(books_path, :method => 'get') do %>
+  Title <%= text_field_tag :title, params[:title]  %>
+  Author <%= text_field_tag :author, params[:author] %>
+  Publication Date : <%= text_field_tag :published, params[:published] %>
+  Subject: <%= text_field_tag :subject, params[:subject] %>
+  <%= submit_tag("Search", :id=>"true", :name=>"search") %>
+<% end %>
+<br>
+<br>
 <table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <tr>
+    <th>ISBN</th>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Language</th>
+    <th>Published</th>
+    <th>Edition</th>
+    <th>Subject</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
 
   <tbody>
     <% @books.each do |book| %>
       <tr>
+        <td><%= book.isbn %></td>
+        <td><%= book.title %></td>
+        <td><%= book.author %></td>
+        <td><%= book.language %></td>
+        <td><%= book.published %></td>
+        <td><%= book.edition %></td>
+        <td><%= book.subject %></td>
         <td><%= link_to 'Show', book %></td>
         <td><%= link_to 'Edit', edit_book_path(book) %></td>
         <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
