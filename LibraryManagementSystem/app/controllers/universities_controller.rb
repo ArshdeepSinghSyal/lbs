@@ -69,6 +69,6 @@ class UniversitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def university_params
-      params.require(:university).permit(:name)
+      params.require(:university).permit(:name, :ug_books_limit, :grad_books_limit, :phd_books_limit)
     end
 end

@@ -5,7 +5,6 @@
 <table>
   <thead>
     <tr align ="center">
-<!--      <th>University</th>-->
       <th>Name</th>
       <th>Location</th>
       <th>Max Days</th>
@@ -16,13 +15,15 @@
   <tbody>
     <% @libraries.each do |library| %>
       <tr align ="center">
-<!--        <td><%#= University.find(library.university_id).name %></td>-->
         <td><%= library.name %></td>
         <td><%= library.location %></td>
         <td><%= library.max_days %></td>
         <td><%= link_to 'Show', university_library_path(@university, library) %></td>
         <td><%= link_to 'Edit', edit_university_library_path(@university, library) %></td>
         <td><%= link_to 'Destroy', university_library_path(@university, library), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td></td>
+        <td><%= link_to 'Books', university_library_lib_books_url(@university, library) %></td>
+        <td><%= link_to 'Reservations', university_library_reservations_url(@university, library) %></td>
       </tr>
     <% end %>
   </tbody>
