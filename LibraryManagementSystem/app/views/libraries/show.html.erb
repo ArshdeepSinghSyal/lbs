@@ -1,34 +1,40 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Name:</b>
-  <%= @library.name %>
+  <strong>University:</strong>
+  <%= University.find(@library.university_id).name %>
 </p>
 
 <p>
-  <b>University:</b>
-  <%= @library.university %>
-</p>
-
-<p>
-  <b>Location (on campus):</b>
+  <strong>Location:</strong>
   <%= @library.location %>
 </p>
 
 <p>
-  <b>Max Allowed Days for Undergraduate Students:</b>
+  <strong>Name:</strong>
+  <%= @library.name %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @library.location %>
+</p>
+
+<p>
+  <strong>Max days undergrad:</strong>
   <%= @library.max_days_undergrad %>
 </p>
 
 <p>
-  <b>Max Allowed Days for Graduate Students:</b>
+  <strong>Max days grad:</strong>
   <%= @library.max_days_grad %>
 </p>
 
 <p>
-  <b>Max Allowed Days for PHD Students:</b>
+  <strong>Max days phd:</strong>
   <%= @library.max_days_phd %>
 </p>
-
-<%= link_to 'Edit', edit_library_path(@library) %> |
-<%= link_to 'Back', libraries_path %>
+<%= link_to 'My Library Books', university_library_lib_books_url(@university, @library) %> |
+<%= link_to 'My Reservations', university_library_reservations_url(@university, @library) %> |
+<%= link_to 'Edit', edit_university_library_path(@university, @library) %> |
+<%= link_to 'Back', university_libraries_path %>

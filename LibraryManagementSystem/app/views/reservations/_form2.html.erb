@@ -1,0 +1,27 @@
+<%#= form_with(model: reservation, local: true) do |form| %>
+<%= form_for [@university, @library, @reservation] do |form| %>
+  <% if reservation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+
+      <ul>
+      <% reservation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :book_id %>
+    <%= select("reservation", "lib_book_id", @library.lib_books.collect{ |c| [ Book.find(c.book_id).title, c.id] })  %>
+    <%#= form.text_field :library_id %>
+  </div>
+
+  <b>Do you want to create reservation?</b>
+
+  <div class="actions">
+    </br>
+    <%= form.submit %>
+  </div>
+<% end %>

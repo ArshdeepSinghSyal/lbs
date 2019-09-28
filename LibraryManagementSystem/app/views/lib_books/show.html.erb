@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Library:</strong>
+  <%= Library.find(@lib_book.library_id).name %>
+  <%#= @lib_book.library %>
+</p>
+
+<p>
+  <strong>Book:</strong>
+  <%= Book.find(@lib_book.book_id).title %>
+  <%#= @lib_book.book %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @lib_book.quantity %>
+</p>
+
+<%= link_to 'Edit', edit_university_library_lib_book_path(@university, @library, @lib_book) %> |
+<%= link_to 'Back', university_library_lib_books_path %>

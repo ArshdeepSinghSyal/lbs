@@ -1,5 +1,5 @@
 class Book < ApplicationRecord
-  # belongs_to :library
+  has_many :lib_books, dependent: :delete_all
 
   validates :isbn, :presence => true, numericality: true, uniqueness: true
   validates :title, :presence => true
@@ -12,16 +12,16 @@ class Book < ApplicationRecord
   # validates :summary
   validates :is_special_collection_item, :presence => true
 
-  def self.search(search_params)
-    if search_params[:title]
-      book = Book.find_by(title: search_params[:title])
-      if book
-        self.where("title = ?",  search_params[:title])
-      else
-        Book.all
-      end
-    else
-      Book.all
-    end
-  end
+  # def self.search(search_params)
+  #   if search_params[:title]
+  #     book = Book.find_by(title: search_params[:title])
+  #     if book
+  #       self.where("title = ?",  search_params[:title])
+  #     else
+  #       Book.all
+  #     end
+  #   else
+  #     Book.all
+  #   end
+  # end
 end
