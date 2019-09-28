@@ -15,13 +15,7 @@
   <div class="field">
     <%= form.label :university_id %>
     <%= select("library", "university_id", University.all.collect{ |c| [ c.name, c.id] })  %>
-    <%#= form.text_field :university_id %>
   </div>
-
-<!--  <div class="field">-->
-    <%#= form.label :location %>
-    <%#= form.text_field :location %>
-<!--  </div>-->
 
   <div class="field">
     <%= form.label :name %>
@@ -34,18 +28,8 @@
   </div>
 
   <div class="field">
-    <%= form.label :max_days_undergrad %>
-    <%= form.number_field :max_days_undergrad %>
-  </div>
-
-  <div class="field">
-    <%= form.label :max_days_grad %>
-    <%= form.number_field :max_days_grad %>
-  </div>
-
-  <div class="field">
-    <%= form.label :max_days_phd %>
-    <%= form.number_field :max_days_phd %>
+    <%= form.label :max_days %>
+    <%= form.number_field :max_days %>
   </div>
 
   <div class="actions">
