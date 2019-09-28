@@ -26,6 +26,11 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
+  <div class="field">
+    <%= f.label :usertype %><br />
+    <%= f.select :usertype, [['Librarian','librarian'], ['Student - Doctoral (PhD)','studentPhD'],['Student - Grad','studentG'],['Student - Undergrad','studentUG']], :prompt => 'Select One'%>
+  </div><br />
+
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>
