@@ -40,6 +40,11 @@
   </div>
   <% end %>
 
+  <div class="field">
+    <%= form.label :Universities %>
+    <%= select("University", "univ_id", University.all.collect{ |c| [ c.name, c.id] })  %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
