@@ -11,6 +11,12 @@
     </div>
   <% end %>
 
+  <div class="field">
+    <%= form.label :book_id %>
+    <%= select("reservations", "lib_book_id", @library.lib_books.collect{ |c| [ Book.find(c.book_id).title, c.id] })  %>
+    <%#= form.text_field :library_id %>
+  </div>
+
   <b>Do you want to create reservation?</b>
 
   <div class="actions">
