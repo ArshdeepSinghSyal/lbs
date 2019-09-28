@@ -6,7 +6,6 @@
   <thead>
     <tr align ="center">
 <!--      <th>University</th>-->
-      <th>Location</th>
       <th>Name</th>
       <th>Location</th>
       <th>Max Days(U)</th>
@@ -20,7 +19,6 @@
     <% @libraries.each do |library| %>
       <tr align ="center">
 <!--        <td><%#= University.find(library.university_id).name %></td>-->
-        <td><%= library.location %></td>
         <td><%= library.name %></td>
         <td><%= library.location %></td>
         <td><%= library.max_days_undergrad %></td>
