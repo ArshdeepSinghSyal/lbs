@@ -40,10 +40,12 @@
   </div>
   <% end %>
 
+  <% if ((current_user.id != @user.id) && current_user.usertype == "admin") || current_user.usertype == "librarian" && ((current_user.id == @user.id) || @user.new_record?) %>
   <div class="field">
     <%= form.label :Universities %>
-    <%= select("University", "univ_id", University.all.collect{ |c| [ c.name, c.id] })  %>
+    <%= select("user", "university_id", University.all.collect{ |c| [ c.name, c.id] })  %>
   </div>
+  <% end %>
 
   <div class="actions">
     <%= form.submit %>

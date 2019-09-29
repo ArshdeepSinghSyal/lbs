@@ -9,7 +9,7 @@
   </div>
 
   <div class="field">
-    <%= f.label :email %><br />
+    <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
@@ -22,14 +22,19 @@
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
   <div class="field">
-    <%= f.label :usertype %><br />
+    <%= f.label :usertype %>
     <%= f.select :usertype, [['Librarian','librarian'], ['Student - Doctoral (PhD)','studentPhD'],['Student - Grad','studentG'],['Student - Undergrad','studentUG']], :prompt => 'Select One'%>
   </div><br />
+
+  <div class="field">
+    <%= f.label :Universities %>
+    <%= select("user", "university_id", University.all.collect{ |c| [ c.name, c.id] })  %>
+  </div>
 
   <div class="actions">
     <%= f.submit "Sign up" %>
