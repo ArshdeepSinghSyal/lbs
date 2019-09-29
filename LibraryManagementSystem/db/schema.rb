@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_28_032907) do
+ActiveRecord::Schema.define(version: 2019_09_29_201522) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -52,9 +52,7 @@ ActiveRecord::Schema.define(version: 2019_09_28_032907) do
     t.integer "university_id"
     t.string "location"
     t.string "name"
-    t.integer "max_days_undergrad"
-    t.integer "max_days_grad"
-    t.integer "max_days_phd"
+    t.integer "max_days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["university_id"], name: "index_libraries_on_university_id"
@@ -82,6 +80,9 @@ ActiveRecord::Schema.define(version: 2019_09_28_032907) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "ug_books_limit"
+    t.integer "grad_books_limit"
+    t.integer "phd_books_limit"
   end
 
   create_table "users", force: :cascade do |t|
@@ -92,9 +93,9 @@ ActiveRecord::Schema.define(version: 2019_09_28_032907) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "name"
     t.string "usertype"
-    t.boolean "is_approved"
+    t.integer "is_approved"
+    t.integer "university_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

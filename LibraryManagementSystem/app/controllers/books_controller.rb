@@ -5,7 +5,22 @@ class BooksController < ApplicationController
   # GET /books.json
   def index
     if params[:search]
-      @books = Book.search(params)
+      @books = []
+      Book.all.each do |book|
+        if params[:title] != ""
+          next if !book.title.downcase.include? params[:title].downcase
+        end
+        if params[:author] != ""
+          next if !book.author.downcase.include? params[:author].downcase
+        end
+        if params[:published] != ""
+          next if !book.published.to_s.eql? params[:published]
+        end
+        if params[:subject] != ""
+          next if !book.subject.downcase.include? params[:subject].downcase
+        end
+        @books.push(book)
+      end
     else
       @books = Book.all
     end

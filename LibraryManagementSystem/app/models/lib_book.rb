@@ -4,4 +4,5 @@ class LibBook < ApplicationRecord
   has_many :reservations, dependent: :delete_all
   # self.primary_keys = :library_id, :book_id
   validates :book, uniqueness: { scope: :library }
+  validates :quantity, :presence => true
 end

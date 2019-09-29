@@ -21,19 +21,10 @@
 </p>
 
 <p>
-  <strong>Max days undergrad:</strong>
-  <%= @library.max_days_undergrad %>
+  <strong>Max days:</strong>
+  <%= @library.max_days %>
 </p>
 
-<p>
-  <strong>Max days grad:</strong>
-  <%= @library.max_days_grad %>
-</p>
-
-<p>
-  <strong>Max days phd:</strong>
-  <%= @library.max_days_phd %>
-</p>
 <%= link_to 'My Library Books', university_library_lib_books_url(@university, @library) %> |
 <%= link_to 'My Reservations', university_library_reservations_url(@university, @library) %> |
 <%= link_to 'Edit', edit_university_library_path(@university, @library) %> |

@@ -16,7 +16,23 @@
     <%= form.text_field :name %>
   </div>
 
+  <div class="field">
+    <%= form.label :ug_books_limit %>
+    <%= form.number_field :ug_books_limit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :grad_books_limit %>
+    <%= form.number_field :grad_books_limit %>
+  </div>
+
+  <div class="field">
+    <%= form.label :phd_books_limit %>
+    <%= form.number_field :phd_books_limit %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
+
 <% end %>

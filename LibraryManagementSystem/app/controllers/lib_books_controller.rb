@@ -6,7 +6,27 @@ class LibBooksController < ApplicationController
   # GET /lib_books
   # GET /lib_books.json
   def index
-    @lib_books = @library.lib_books
+    if params[:search]
+      @lib_books = []
+      @library.lib_books.each do |lib_book|
+        @book = Book.find_by_id(lib_book.book_id)
+        if params[:title] != ""
+          next if !@book.title.downcase.include? params[:title].downcase
+        end
+        if params[:author] != ""
+          next if !@book.author.downcase.include? params[:author].downcase
+        end
+        if params[:published] != ""
+          next if !@book.published.to_s.eql? params[:published]
+        end
+        if params[:subject] != ""
+          next if !@book.subject.downcase.include? params[:subject].downcase
+        end
+        @lib_books.push(lib_book)
+      end
+    else
+      @lib_books = @library.lib_books
+    end
   end
 
   # GET /lib_books/1

@@ -1,7 +1,13 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Lib Books</h1>
-
+<%= form_tag(university_library_lib_books_path, :method => 'get') do %>
+  Title <%= text_field_tag :title, params[:title]  %>
+  Author <%= text_field_tag :author, params[:author] %>
+  Publication Date : <%= date_field_tag :published, params[:published] %>
+  Subject: <%= text_field_tag :subject, params[:subject] %>
+  <%= submit_tag("Search", :id=>"true", :name=>"search") %>
+<% end %>
 <table>
   <thead>
     <tr>

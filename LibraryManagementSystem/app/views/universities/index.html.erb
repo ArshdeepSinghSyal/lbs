@@ -6,6 +6,9 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>UG Book Limit</th>
+      <th>Grad Book Limit</th>
+      <th>PhD Book Limit</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,9 +17,14 @@
     <% @universities.each do |university| %>
       <tr>
         <td><%= university.name %></td>
+        <td><%= university.ug_books_limit %></td>
+        <td><%= university.grad_books_limit %></td>
+        <td><%= university.phd_books_limit %></td>
         <td><%= link_to 'Show', university %></td>
         <td><%= link_to 'Edit', edit_university_path(university) %></td>
         <td><%= link_to 'Destroy', university, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td></td>
+        <td><%= link_to 'Libraries', university_libraries_url(university) %></td>
       </tr>
     <% end %>
   </tbody>
