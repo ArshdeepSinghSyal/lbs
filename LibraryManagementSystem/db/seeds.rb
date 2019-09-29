@@ -5,8 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Usertype.create(:user_type => 'admin')
-Usertype.create(:user_type => 'librarian')
-Usertype.create(:user_type => 'student')
+Usertype.create(:usertype => 'admin')
+Usertype.create(:usertype => 'librarian')
+Usertype.create(:usertype => 'studentG')
+Usertype.create(:usertype => 'studentUG')
+Usertype.create(:usertype => 'studentPhD')
 
-user.create(:email => 'admin@lms.com', :password => 'password', :user_type => 1, :name => 'Administrator')
+@university = University.create!(:name => 'default', :ug_books_limit => 0, :grad_books_limit => 0, :phd_books_limit => 0)
+User.create!(:email => 'admin@lms.com', :password => 'password', :usertype => "admin", :name => 'Admin', :university_id => @university.id)

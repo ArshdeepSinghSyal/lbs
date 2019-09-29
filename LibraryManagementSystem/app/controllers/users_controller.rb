@@ -3,9 +3,22 @@ class UsersController < ApplicationController
 
   # GET /users
   # GET /users.json
+
   def index
-    @users = User.all
+    if current_user.usertype == "admin"
+      @users = User.all
+    else
+      @users = User.where("id = ?", current_user.id)
+    end
   end
+
+  # def approve(user)
+  #   respond_to do |format|
+  #     # user.update_attributes(:is_approved => 1)
+  #     format.html { redirect_to users_url, notice: 'User was successfully approved.' }
+  #     format.json { head :no_content }
+  #   end
+  # end
 
   # GET /users/1
   # GET /users/1.json
@@ -28,11 +41,11 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
+        format.html {redirect_to current_user, notice: 'User was successfully created.'}
+        format.json {render :show, status: :created, location: @user}
       else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.html {render :new}
+        format.json {render json: @user.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -54,21 +67,28 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
+      if @user.usertype == "admin"
+        format.html {redirect_to users_url, notice: 'Admin account cannot be deleted'}
+        format.json {head :no_content}
+      else
+      @user.destroy
+        format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+        format.json { head :no_content }
+      end
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      if params[:id] != 'sign_out'
+        @user = User.find(params[:id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.fetch(:user, {})
+      params.require(:user).permit(:name, :password, :email, :usertype, :university_id)
     end
 end
