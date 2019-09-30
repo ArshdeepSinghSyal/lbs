@@ -1,15 +1,15 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Reservations</h1>
+<h1>All Reservations</h1>
 
 <table>
   <thead>
     <tr>
       <th>Title</th>
       <th>Status</th>
-      <th>Checkoutstamp</th>
-      <th>Returnstamp</th>
-      <th>Requeststamp</th>
+      <th>Checkout Time</th>
+      <th>Return Time</th>
+      <th>Request Time</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -30,10 +30,8 @@
         <td><%= reservation.checkoutstamp %></td>
         <td><%= reservation.returnstamp %></td>
         <td><%= reservation.requeststamp %></td>
-        <td><%= link_to 'Show', university_library_reservation_path(@university, @library, reservation) %></td>
-        <td><%= link_to 'Edit', edit_university_library_reservation_path(@university, @library, reservation) %></td>
+        <td><%= link_to 'View Details', university_library_reservation_path(@university, @library, reservation) %></td>
         <td><%= link_to 'Destroy', university_library_reservation_path(@university, @library, reservation), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-
       </tr>
     <% end %>
   </tbody>
@@ -41,5 +39,5 @@
 
 <br>
 
-<%= link_to 'New Reservation', new_university_library_reservation_path %>
+<!--<%#= link_to 'New Reservation', new_university_library_reservation_path %> |-->
 <%= link_to 'Back', university_library_path(@university, @library) %>

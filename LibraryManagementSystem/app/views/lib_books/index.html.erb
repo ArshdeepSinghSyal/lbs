@@ -36,7 +36,7 @@
         <td><%= @available %></td>
         <td><%= Reservation.where(:lib_book => lib_book.id).where(:status => 2).count() %></td>
         <% if current_user.usertype == "studentG" || current_user.usertype == "studentUG" || current_user.usertype == "studentPhD" %>
-          <% if @available > 0 && @book.is_special_collection_item == false %>
+          <% if @available > 0 && @book.is_special_collection_item == false && @num_existing_reservations < @book_limit%>
             <td><%= button_to 'Checkout', {:controller => "reservations", :action => "create", params: {reservation: {:lib_book_id=> lib_book.id, :user_id=> current_user.id, :status=>1 }} }, {:method=>:post}  %></td>
           <% else %>
             <td><%= button_to 'Request', {:controller => "reservations", :action => "create", params: {reservation: {:lib_book_id=> lib_book.id, :user_id=> current_user.id, :status=>2 }} }, {:method=>:post}  %></td>

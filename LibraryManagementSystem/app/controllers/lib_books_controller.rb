@@ -2,6 +2,7 @@ class LibBooksController < ApplicationController
   before_action :set_lib_book, only: [:show, :edit, :update, :destroy]
   before_action(:get_library)
   before_action(:get_university)
+  before_action :get_counts
 
   # GET /lib_books
   # GET /lib_books.json
@@ -100,5 +101,17 @@ class LibBooksController < ApplicationController
 
     def get_university
       @university = University.find(params[:university_id])
+    end
+
+    def get_counts
+      @book_limit = -1
+      if current_user.usertype == 'studentUG'
+        @book_limit = @university.ug_books_limit
+      elsif current_user.usertype == 'studentG'
+        @book_limit = @university.grad_books_limit
+      elsif current_user.usertype == 'studentPhD'
+        @book_limit = @university.phd_books_limit
+      end
+      @num_existing_reservations = Reservation.where(:user_id => current_user.id).where(:status => 1).count()
     end
 end
