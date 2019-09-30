@@ -5,8 +5,7 @@
 <table>
   <thead>
     <tr>
-      <th>Lib book</th>
-      <th>User</th>
+      <th>Title</th>
       <th>Status</th>
       <th>Checkoutstamp</th>
       <th>Returnstamp</th>
@@ -18,9 +17,16 @@
   <tbody>
     <% @reservations.each do |reservation| %>
       <tr>
-        <td><%= reservation.lib_book %></td>
-        <td><%= reservation.user %></td>
-        <td><%= reservation.status %></td>
+        <td><%= Book.find_by_id(reservation.lib_book.book_id).title %></td>
+        <% if reservation.status == 0 %>
+          <td> Returned </td>
+        <% elsif reservation.status == 1 %>
+          <td> Checked out </td>
+        <% elsif reservation.status == 2 %>
+          <td> Requested </td>
+        <% else %>
+          <td> Unknown </td>
+        <% end %>
         <td><%= reservation.checkoutstamp %></td>
         <td><%= reservation.returnstamp %></td>
         <td><%= reservation.requeststamp %></td>

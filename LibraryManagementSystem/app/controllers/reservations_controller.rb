@@ -3,6 +3,11 @@ class ReservationsController < ApplicationController
   before_action(:get_library)
   before_action(:get_university)
 
+  # Reservation status
+  # 0 => Returned
+  # 1 => Checked out
+  # 2 => Requested
+
   # GET /reservations
   # GET /reservations.json
   def index
@@ -33,7 +38,7 @@ class ReservationsController < ApplicationController
   # POST /reservations.json
   def create
     @reservation = Reservation.new(reservation_params)
-
+    @reservation.checkoutstamp = Time.now()
     respond_to do |format|
       if @reservation.save
         format.html { redirect_to university_library_reservations_path, notice: 'Reservation was successfully created.' }
@@ -43,6 +48,7 @@ class ReservationsController < ApplicationController
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
+
   end
 
   # PATCH/PUT /reservations/1

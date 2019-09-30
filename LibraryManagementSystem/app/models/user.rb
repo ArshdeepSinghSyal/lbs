@@ -6,6 +6,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :university
+  has_many :reservations, dependent: :delete_all
+
   validates :password, presence: true
   validates :usertype, presence: true
   validates :email, presence: true, uniqueness: true, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create}
