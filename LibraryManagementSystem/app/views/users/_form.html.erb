@@ -44,7 +44,7 @@
   <div class="field">
     <%= form.label :Universities %>
     <%= select_tag :university_id, options_for_select(University.all.reject { |u| u.name == "default" }.collect{ |c| [ c.name , c.id] }, selected: params[:university_id]),
-    prompt: "Select University", class: "form-control", :onchange => "myFunction();" %>
+    prompt: "Select University", class: "form-control", :onchange => "myFunction(this.options[this.selectedIndex].value);" %>
   </div>
   <% end %>
 
@@ -53,47 +53,29 @@
   prompt: "Select Library", class: "form-control" %>
   </div>
 
-  <div id = "responsecontainer"> </div>
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
 
 <script>
-    function myFunction() {
+    function myFunction(university_id) {
+        let x =  "http://localhost:3000//universities/" + university_id + "/libraries.json"
+        console.log(x)
         Rails.ajax({
-            url: "http://localhost:3000/universities/2/libraries",
+            url: x,
             type: "get",
             data:"",
-            success: function (data) {
-                console.log(data)
+            error: function (xhr, status, error) {
+                console.error('AJAX Error: ' + status + error);
             },
-            error: function (data) {
+            success: function (data) {
+                $("#Library select").empty();
+                $("#Library select").append('<option>Select Library</option>');
+                for (let i = 0; i < data.length; i++) {
+                    $("#Library select").append('<option value="' + data[i]["id"] + '">' + data[i]["name"] + '</option>');
+              }
             }
-        })
-
-        // Rails.ajax(url: "/universities/2/librarie").done (html) ->
-        // alert('test')// $("#results").append html
-
-        // var university = $(this).val();
-        // $.ajax({
-        //     url: '/universities/2/libraries'
-        //     method: "GET",
-        //     dataType: "json",
-        //     // data: {country: country},
-        //     error: function (xhr, status, error) {
-        //         console.error('AJAX Error: ' + status + error);
-        //     },
-        //     success: function (response) {
-        // //         console.log(response);
-        // //         let libraries = response["libraries"];
-        // //         $("#Library select").empty();
-        // //
-        // //         $("#Library select").append('<option>Select Library</option>');
-        // //         for (let i = 0; i < libraries.length; i++) {
-        // //             $("#Library select").append('<option value="' + libraries[i]["id"] + '">' + libraries[i]["name"] + '</option>');
-        // //         }
-        //     }
-        // });
+        });
     }
 </script>
