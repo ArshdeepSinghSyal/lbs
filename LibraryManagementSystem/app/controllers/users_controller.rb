@@ -28,12 +28,26 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @libraries = []
+    if params[:university_id].present?
+      @libraries = University.find(params[:university_id]).libraries
+    end
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: {libraries: @libraries}
+        }
+      end
+    end
   end
 
   # GET /users/1/edit
   def edit
   end
 
+  def myFunction
+    alert('test')
+  end
   # POST /users
   # POST /users.json
   def create

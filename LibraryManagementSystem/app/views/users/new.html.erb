@@ -1,6 +1,6 @@
 <h3>New User</h3>
 <% if current_user.usertype == "admin" %>
-  <%= render 'form', user: @user %>
+  <%= render 'form', user: @user, libraries: @libraries %>
 <%else%>
   <h3> You don't have permission to add user. </h3>
 <% end %>

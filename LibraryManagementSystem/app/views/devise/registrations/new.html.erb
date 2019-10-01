@@ -33,7 +33,7 @@
 
   <div class="field">
     <%= f.label :Universities %>
-    <%= select("user", "university_id", University.all.collect{ |c| [ c.name, c.id] })  %>
+    <%= select("user", "university_id", University.all.reject { |u| u.name == "default" }.collect{ |c| [ c.name, c.id] })  %>
   </div>
 
   <div class="actions">
