@@ -1,34 +1,40 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Lib book:</strong>
-  <%= @reservation.lib_book %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @reservation.user %>
+  <strong>Title:</strong>
+  <%= Book.find_by_id(@reservation.lib_book.book_id).title %>
 </p>
 
 <p>
   <strong>Status:</strong>
-  <%= @reservation.status %>
+  <% if @reservation.status == 0 %>
+    Returned
+  <% elsif @reservation.status == 1 %>
+    Checked out
+  <% elsif @reservation.status == 2 %>
+    Requested
+  <% else %>
+    Unknown
+  <% end %>
 </p>
 
 <p>
-  <strong>Checkoutstamp:</strong>
+  <strong>Checkout Time:</strong>
   <%= @reservation.checkoutstamp %>
 </p>
 
 <p>
-  <strong>Returnstamp:</strong>
+  <strong>Returns Time:</strong>
   <%= @reservation.returnstamp %>
 </p>
 
 <p>
-  <strong>Requeststamp:</strong>
+  <strong>Request Time:</strong>
   <%= @reservation.requeststamp %>
 </p>
-
-<%= link_to 'Edit', edit_reservation_path(@reservation) %> |
-<%= link_to 'Back', reservations_path %>
+<% if @reservation.status == 1 %>
+  <%= link_to 'Return book', {:controller => "reservations", :action => "update", params: {reservation: {:lib_book_id=> @reservation.lib_book.id, :user_id=> current_user.id, :status=> 0, :returnstamp => Time.now() }} }, {:method=>:put}  %> |
+<% elsif @reservation.status == 2 %>
+  <%= link_to 'Cancel request', university_library_reservation_path(@university, @library, @reservation), method: :delete, data: { confirm: 'Are you sure?' } %> |
+<% end %>
+<%= link_to 'Back', university_library_reservations_path %>

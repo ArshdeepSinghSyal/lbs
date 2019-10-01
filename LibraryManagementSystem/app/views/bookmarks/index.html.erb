@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Bookmarks</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Book</th>
+      <th>Author</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bookmarks.each do |bookmark|
+       @book = Book.find_by_id(LibBook.find_by_id(bookmark.lib_book_id).book_id)
+    %>
+      <tr>
+        <td><%= @book.title %></td>
+        <td><%= @book.author %></td>
+        <td><%= link_to 'Delete Bookmark', university_library_bookmark_path(@university, @library, bookmark) , method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Back', university_library_path(@university, @library) %>
