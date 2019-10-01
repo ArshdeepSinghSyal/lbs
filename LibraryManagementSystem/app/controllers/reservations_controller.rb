@@ -128,9 +128,26 @@ class ReservationsController < ApplicationController
     def notify_next
       #Only if book is returned
       if reservation_params[:status].eql?"0"
-        @next_requester = Reservation.where(:status => 2).where(:lib_book => reservation_params[:lib_book_id]).order(:requeststamp).first()
-        if !@next_requester.eql?nil
-          #send email
+        @next_requester_query = Reservation.where(:status => 2).where(:lib_book => reservation_params[:lib_book_id]).order(:requeststamp)
+        @next_requester_query.all.each do |next_requester|
+          if !next_requester.eql?nil
+            num_existing_reservations = Reservation.where(:user_id => next_requester.user_id).where(:status => 1).count()
+            next_requester_user = User.find_by_id(next_requester.user_id)
+            next_requester_university = University.find(next_requester_user.university_id)
+            if next_requester_user.usertype == 'studentUG'
+              next_requester_book_limit = next_requester_university.ug_books_limit
+            elsif next_requester_user.usertype == 'studentG'
+              next_requester_book_limit = next_requester_university.grad_books_limit
+            elsif next_requester_user.usertype == 'studentPhD'
+              next_requester_book_limit = next_requester_university.phd_books_limit
+            end
+            if num_existing_reservations < next_requester_book_limit
+              next_requester.update(:checkoutstamp => Time.now(), :status => 1)
+              @book_title = Book.find(LibBook.find(reservation_params[:lib_book_id]).book_id).title
+              UserMailer.mailer(next_requester_user.email, next_requester_user.name, @book_title, @library.name).deliver
+              break
+            end
+          end
         end
       end
     end
