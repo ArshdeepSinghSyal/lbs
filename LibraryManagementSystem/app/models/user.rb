@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   belongs_to :university
   has_many :reservations, dependent: :delete_all
+  has_many :bookmarks, dependent: :delete_all
 
   validates :password, presence: true
   validates :usertype, presence: true
