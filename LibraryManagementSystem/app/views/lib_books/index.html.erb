@@ -27,7 +27,7 @@
     <% @lib_books.each do |lib_book|
           @book = Book.find(lib_book.book_id)
           @available = lib_book.quantity - Reservation.where(:lib_book => lib_book.id).where(:status => 1).count()
-          @bookmarked = Bookmark.where(:user_id => current_user.id).where(:lib_book => lib_book.id)
+          @bookmark = Bookmark.where(:user_id => current_user.id).where(:lib_book => lib_book.id).first()
     %>
       <tr>
         <td><%= link_to @book.title, book_path(lib_book.book_id) %></td>
@@ -43,10 +43,10 @@
             <td><%= button_to 'Request', {:controller => "reservations", :action => "create", params: {reservation: {:lib_book_id=> lib_book.id, :user_id=> current_user.id, :status=>2 }} }, {:method=>:post}  %></td>
           <% end %>
 
-          <% if @bookmarked.eql?nil %>
+          <% if @bookmark.eql?nil %>
             <td><%= button_to 'Bookmark', {:controller => "bookmarks", :action => "create", params: {bookmark: {:lib_book_id=> lib_book.id, :user_id=> current_user.id}} }, {:method=>:post}  %></td>
           <% else %>
-            <td><%= button_to 'Remove Bookmark', university_library_bookmark_path(@university, @library, @bookmarked), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= button_to 'Remove Bookmark', university_library_bookmark_path(@university, @library, @bookmark), method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <% end %>
         <% end %>
         <% if current_user.usertype == "librarian" || current_user.usertype == "admin" %>
