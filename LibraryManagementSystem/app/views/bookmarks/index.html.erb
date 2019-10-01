@@ -17,9 +17,9 @@
         <td><%= Book.find_by_id(LibBook.find_by_id(bookmark.lib_book_id).book_id).title %></td>
 <!--        <td><%#= bookmark.user %></td>-->
 <!--        <td><%#= bookmark.lib_book %></td>-->
-        <td><%= link_to 'Show', bookmark %></td>
-        <td><%= link_to 'Edit', edit_bookmark_path(bookmark) %></td>
-        <td><%= link_to 'Destroy', bookmark, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+<!--        <td><%#= link_to 'Show', bookmark %></td>-->
+<!--        <td><%#= link_to 'Edit', edit_bookmark_path(bookmark) %></td>-->
+        <td><%= link_to 'Delete Bookmark', university_library_bookmark_path(@university, @library, bookmark) , method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -27,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New Bookmark', new_bookmark_path %>
+<%#= link_to 'New Bookmark', new_bookmark_path %>
