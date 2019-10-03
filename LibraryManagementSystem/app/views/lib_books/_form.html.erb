@@ -12,11 +12,12 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :library_id %>
-    <%= select("lib_book", "library_id", Library.all.collect{ |c| [ c.name, c.id] })  %>
-    <%#= form.text_field :library_id %>
-  </div>
+<!--  <div class="field">-->
+    <%#= form.label :library_id %>
+    <%#= select("lib_book", "library_id", Library.all.collect{ |c| [ c.name, c.id] })  %>
+<!--  </div>-->
+
+  <%= form.hidden_field :library_id, value: @library.id %>
 
   <div class="field">
     <%= form.label :book_id %>

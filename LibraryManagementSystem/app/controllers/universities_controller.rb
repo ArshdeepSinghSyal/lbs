@@ -1,12 +1,28 @@
 class UniversitiesController < ApplicationController
   before_action :set_university, only: [:show, :edit, :update, :destroy]
+  before_action :validate_user, only: [:new]
 
   # GET /universities
   # GET /universities.json
   def index
-    @universities = University.all
+    if current_user.usertype == "admin"
+      @universities = []
+      @list_all = University.all
+      @list_all.each do |university|
+        if !university.name.eql?"default"
+          @universities.append(university)
+        end
+      end
+    else
+      @universities = University.where("id = ?", current_user.university_id)
+    end
   end
 
+  def validate_user
+    if current_user.usertype != "admin"
+      false
+    end
+  end
   # GET /universities/1
   # GET /universities/1.json
   def show
@@ -14,7 +30,7 @@ class UniversitiesController < ApplicationController
 
   # GET /universities/new
   def new
-    @university = University.new
+      @university = University.new
   end
 
   # GET /universities/1/edit

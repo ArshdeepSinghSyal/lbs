@@ -1,7 +1,9 @@
 <p id="notice"><%= notice %></p>
 
 <h1>All Reservations</h1>
-
+<br>
+A fine of $<%= @library.fine %> per day will be levied if a book is not returned within <%= @library.max_days %> days of issue.
+</br></br>
 <table>
   <thead>
     <tr>
@@ -10,6 +12,7 @@
       <th>Checkout Time</th>
       <th>Return Time</th>
       <th>Request Time</th>
+      <th>Overdue Fine</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -30,6 +33,8 @@
         <td><%= reservation.checkoutstamp %></td>
         <td><%= reservation.returnstamp %></td>
         <td><%= reservation.requeststamp %></td>
+        <td><%= reservation.fine %></td>
+
         <td><%= link_to 'View Details', university_library_reservation_path(@university, @library, reservation) %></td>
         <td><%= link_to 'Destroy', university_library_reservation_path(@university, @library, reservation), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -38,6 +43,4 @@
 </table>
 
 <br>
-
-<!--<%#= link_to 'New Reservation', new_university_library_reservation_path %> |-->
 <%= link_to 'Back', university_library_path(@university, @library) %>

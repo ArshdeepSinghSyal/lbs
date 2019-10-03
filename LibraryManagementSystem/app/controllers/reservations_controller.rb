@@ -8,6 +8,8 @@ class ReservationsController < ApplicationController
   # 0 => Returned
   # 1 => Checked out
   # 2 => Requested
+  # 5$ fine on each day
+
 
   # GET /reservations
   # GET /reservations.json
@@ -15,6 +17,17 @@ class ReservationsController < ApplicationController
     @reservations = []
     @library.lib_books.each do |lib_book|
       lib_book.reservations.each do |reservation|
+        if reservation.status == 0 || reservation.status == 1
+          total_days = (reservation.status == 1) ?
+                           (Date.parse(Time.now.to_s) - Date.parse(reservation.checkoutstamp.to_s)).to_i
+                           : (Date.parse(reservation.returnstamp.to_s) - Date.parse(reservation.checkoutstamp.to_s)).to_i
+          extra_days = 0
+          allowed_days = @library.max_days
+          if total_days > allowed_days
+            extra_days = total_days - allowed_days
+          end
+          reservation.fine = extra_days * @library.fine
+        end
         if current_user.usertype == "admin" || current_user.usertype == "librarian"
           @reservations.push(reservation)
         else
