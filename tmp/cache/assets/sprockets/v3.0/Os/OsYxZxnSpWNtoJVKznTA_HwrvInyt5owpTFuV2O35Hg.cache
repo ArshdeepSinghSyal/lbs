@@ -1,0 +1,31 @@
+I"€(function() {
+  $(document).on('change', '#university_id select', function() {
+    var myFunction, university;
+    university = $(this).val();
+    $.ajax({
+      url: '/universities/2/libraries',
+      method: 'GET',
+      dataType: 'json',
+      error: function(xhr, status, error) {
+        console.error('AJAX Error: ' + status + error);
+      },
+      success: function(response) {
+        var i, libraries;
+        console.log(response);
+        libraries = response['libraries'];
+        $('#Library select').empty();
+        $('#Library select').append('<option>Select library</option>');
+        i = 0;
+        while (i < cities.length) {
+          $('#Library select').append('<option value="' + libraries[i]['id'] + '">' + libraries[i]['name'] + '</option>');
+          i++;
+        }
+      }
+    });
+    return;
+    myFunction = function() {};
+    alert('test');
+  });
+
+}).call(this);
+:ET
