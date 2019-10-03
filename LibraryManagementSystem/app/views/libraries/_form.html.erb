@@ -12,10 +12,8 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :university_id %>
-    <%= select("library", "university_id", University.all.reject{|u| u.name == "default"}.collect{ |c| [ c.name, c.id] })  %>
-  </div>
+  <%= form.hidden_field :university_id, value: @university.id %>
+
 
   <div class="field">
     <%= form.label :name %>
@@ -30,6 +28,11 @@
   <div class="field">
     <%= form.label :max_days %>
     <%= form.number_field :max_days %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fine %>
+    <%= form.number_field :fine %>
   </div>
 
   <div class="actions">

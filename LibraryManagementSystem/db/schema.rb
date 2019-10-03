@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_01_034158) do
+ActiveRecord::Schema.define(version: 2019_10_03_025105) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2019_10_01_034158) do
     t.integer "max_days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "fine"
     t.index ["university_id"], name: "index_libraries_on_university_id"
   end
 
