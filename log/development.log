@@ -13386,3 +13386,185 @@ Processing by UsersController#new as HTML
 Completed 200 OK in 182ms (Views: 109.3ms | ActiveRecord: 28.1ms)
 
 
+Started GET "/" for ::1 at 2019-10-03 03:01:58 -0400
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/rack-2.0.7/lib/rack/method_override.rb:22
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:17
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.erb:16
+  Rendered users/index.html.erb within layouts/application (6.3ms)
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/layouts/application.html.erb:14
+Completed 200 OK in 347ms (Views: 321.2ms | ActiveRecord: 1.8ms)
+
+
+Started GET "/universities" for ::1 at 2019-10-03 03:02:01 -0400
+Processing by UniversitiesController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:17
+  [1m[36mUniversity Load (0.2ms)[0m  [1m[34mSELECT "universities".* FROM "universities"[0m
+  ↳ app/controllers/universities_controller.rb:11
+  Rendering universities/index.html.erb within layouts/application
+  Rendered universities/index.html.erb within layouts/application (1.7ms)
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/layouts/application.html.erb:14
+Completed 200 OK in 43ms (Views: 39.3ms | ActiveRecord: 0.5ms)
+
+
+Started DELETE "/users/sign_out" for ::1 at 2019-10-03 03:02:03 -0400
+Processing by Devise::SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"IMsh1hZLLXa3MTEoAtu3QFazFRValrQ92bun+xXsmdJGs1LIM5XQZS4osTkr0tK3UsG+AoSAb2lNn+uEtOJw0A=="}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:17
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/warden-1.2.8/lib/warden/hooks.rb:15
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/warden-1.2.8/lib/warden/hooks.rb:15
+Redirected to http://localhost:3000/
+Completed 302 Found in 182ms (ActiveRecord: 0.2ms)
+
+
+Started GET "/" for ::1 at 2019-10-03 03:02:04 -0400
+Processing by UsersController#index as HTML
+Completed 401 Unauthorized in 2ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for ::1 at 2019-10-03 03:02:04 -0400
+Processing by Devise::SessionsController#new as HTML
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/shared/_links.html.erb (1.1ms)
+  Rendered devise/sessions/new.html.erb within layouts/application (140.9ms)
+Completed 200 OK in 205ms (Views: 203.0ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/users/sign_in" for ::1 at 2019-10-03 03:02:13 -0400
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"WtTZKyNzq/YD2RfbDYXGFSXvaQb97KqiuE4g4l/Q64xD9A0r4SMMbc0lMqy13KJ34qIujbrvN7Z94MMWmIOKng==", "user"=>{"email"=>"r@gmail.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."email" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["email", "r@gmail.com"], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:22
+Redirected to http://localhost:3000/
+Completed 302 Found in 276ms (ActiveRecord: 1.5ms)
+
+
+Started GET "/" for ::1 at 2019-10-03 03:02:13 -0400
+Processing by UsersController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:17
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE (id = 9)[0m
+  ↳ app/views/users/index.html.erb:16
+  Rendered users/index.html.erb within layouts/application (1.6ms)
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/layouts/application.html.erb:14
+Completed 200 OK in 39ms (Views: 36.4ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/universities" for ::1 at 2019-10-03 03:02:16 -0400
+Processing by UniversitiesController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:17
+  Rendering universities/index.html.erb within layouts/application
+  [1m[36mUniversity Load (0.2ms)[0m  [1m[34mSELECT "universities".* FROM "universities" WHERE (id = 5)[0m
+  ↳ app/views/universities/index.html.erb:17
+  Rendered universities/index.html.erb within layouts/application (1.9ms)
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/layouts/application.html.erb:14
+Completed 200 OK in 38ms (Views: 35.7ms | ActiveRecord: 0.4ms)
+
+
+Started GET "/universities/5/libraries" for ::1 at 2019-10-03 03:02:20 -0400
+Processing by LibrariesController#index as HTML
+  Parameters: {"university_id"=>"5"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:17
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/libraries_controller.rb:77
+  Rendering libraries/index.html.erb within layouts/application
+  [1m[36mLibrary Load (0.1ms)[0m  [1m[34mSELECT "libraries".* FROM "libraries" WHERE "libraries"."university_id" = ?[0m  [["university_id", 5]]
+  ↳ app/views/libraries/index.html.erb:17
+  Rendered libraries/index.html.erb within layouts/application (10.6ms)
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/layouts/application.html.erb:14
+Completed 200 OK in 50ms (Views: 43.1ms | ActiveRecord: 0.9ms)
+
+
+Started GET "/universities/5/libraries/4/lib_books" for ::1 at 2019-10-03 03:02:22 -0400
+Processing by LibBooksController#index as HTML
+  Parameters: {"university_id"=>"5", "library_id"=>"4"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:17
+  [1m[36mLibrary Load (0.2ms)[0m  [1m[34mSELECT  "libraries".* FROM "libraries" WHERE "libraries"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/lib_books_controller.rb:99
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/lib_books_controller.rb:103
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = ? AND "reservations"."status" = ?[0m  [["user_id", 9], ["status", 1]]
+  ↳ app/controllers/lib_books_controller.rb:115
+  Rendering lib_books/index.html.erb within layouts/application
+  [1m[36mLibBook Load (0.4ms)[0m  [1m[34mSELECT "lib_books".* FROM "lib_books" WHERE "lib_books"."library_id" = ?[0m  [["library_id", 4]]
+  ↳ app/views/lib_books/index.html.erb:27
+  [1m[36mBook Load (0.4ms)[0m  [1m[34mSELECT  "books".* FROM "books" WHERE "books"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/lib_books/index.html.erb:28
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."lib_book_id" = ? AND "reservations"."status" = ?[0m  [["lib_book_id", 1], ["status", 1]]
+  ↳ app/views/lib_books/index.html.erb:29
+  [1m[36mBookmark Load (0.1ms)[0m  [1m[34mSELECT  "bookmarks".* FROM "bookmarks" WHERE "bookmarks"."user_id" = ? AND "bookmarks"."lib_book_id" = ? ORDER BY "bookmarks"."id" ASC LIMIT ?[0m  [["user_id", 9], ["lib_book_id", 1], ["LIMIT", 1]]
+  ↳ app/views/lib_books/index.html.erb:30
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."lib_book_id" = ? AND "reservations"."status" = ?[0m  [["lib_book_id", 1], ["status", 2]]
+  ↳ app/views/lib_books/index.html.erb:38
+  Rendered lib_books/index.html.erb within layouts/application (30.5ms)
+  [1m[36mUniversity Load (0.2ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/layouts/application.html.erb:14
+Completed 200 OK in 92ms (Views: 76.9ms | ActiveRecord: 4.4ms)
+
+
+Started POST "/universities/5/libraries/4/reservations?reservation%5Blib_book_id%5D=1&reservation%5Bstatus%5D=1&reservation%5Buser_id%5D=9" for ::1 at 2019-10-03 03:02:24 -0400
+Processing by ReservationsController#create as HTML
+  Parameters: {"authenticity_token"=>"wb4xvzc+fhentFajuP8lmyP9Zl7bSAHavDWdhkZhwzUqOhBC9IKuTtUUdIv1MYg90BC7Cqhxar2ICrB31iLgMw==", "reservation"=>{"lib_book_id"=>"1", "status"=>"1", "user_id"=>"9"}, "university_id"=>"5", "library_id"=>"4"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:17
+  [1m[36mLibrary Load (0.1ms)[0m  [1m[34mSELECT  "libraries".* FROM "libraries" WHERE "libraries"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/reservations_controller.rb:116
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/reservations_controller.rb:120
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "reservations" WHERE "reservations"."user_id" = ? AND "reservations"."status" = ?[0m  [["user_id", 9], ["status", 1]]
+  ↳ app/controllers/reservations_controller.rb:134
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/reservations_controller.rb:69
+  [1m[36mLibBook Load (0.1ms)[0m  [1m[34mSELECT  "lib_books".* FROM "lib_books" WHERE "lib_books"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/reservations_controller.rb:69
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/reservations_controller.rb:69
+  [1m[36mReservation Create (0.7ms)[0m  [1m[32mINSERT INTO "reservations" ("lib_book_id", "user_id", "status", "checkoutstamp", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)[0m  [["lib_book_id", 1], ["user_id", 9], ["status", 1], ["checkoutstamp", "2019-10-03 07:02:24.142321"], ["created_at", "2019-10-03 07:02:24.145384"], ["updated_at", "2019-10-03 07:02:24.145384"]]
+  ↳ app/controllers/reservations_controller.rb:69
+  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/reservations_controller.rb:69
+Redirected to http://localhost:3000/universities/5/libraries/4/reservations
+Completed 302 Found in 15ms (ActiveRecord: 2.3ms)
+
+
+Started GET "/universities/5/libraries/4/reservations" for ::1 at 2019-10-03 03:02:24 -0400
+Processing by ReservationsController#index as HTML
+  Parameters: {"university_id"=>"5", "library_id"=>"4"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ /Users/richadua/.rvm/rubies/ruby-2.6.3/lib/ruby/gems/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb:17
+  [1m[36mLibrary Load (0.1ms)[0m  [1m[34mSELECT  "libraries".* FROM "libraries" WHERE "libraries"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/reservations_controller.rb:116
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/reservations_controller.rb:120
+  [1m[36mLibBook Load (0.1ms)[0m  [1m[34mSELECT "lib_books".* FROM "lib_books" WHERE "lib_books"."library_id" = ?[0m  [["library_id", 4]]
+  ↳ app/controllers/reservations_controller.rb:18
+  [1m[36mReservation Load (0.1ms)[0m  [1m[34mSELECT "reservations".* FROM "reservations" WHERE "reservations"."lib_book_id" = ?[0m  [["lib_book_id", 1]]
+  ↳ app/controllers/reservations_controller.rb:19
+  Rendering reservations/index.html.erb within layouts/application
+  [1m[36mBook Load (0.2ms)[0m  [1m[34mSELECT  "books".* FROM "books" WHERE "books"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reservations/index.html.erb:33
+  [1m[36mCACHE Book Load (0.0ms)[0m  [1m[34mSELECT  "books".* FROM "books" WHERE "books"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/views/reservations/index.html.erb:33
+  Rendered reservations/index.html.erb within layouts/application (3.3ms)
+  [1m[36mUniversity Load (0.1ms)[0m  [1m[34mSELECT  "universities".* FROM "universities" WHERE "universities"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/layouts/application.html.erb:14
+Completed 200 OK in 88ms (Views: 39.6ms | ActiveRecord: 0.8ms)
+
+
