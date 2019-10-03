@@ -12,14 +12,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # def approve(user)
-  #   respond_to do |format|
-  #     # user.update_attributes(:is_approved => 1)
-  #     format.html { redirect_to users_url, notice: 'User was successfully approved.' }
-  #     format.json { head :no_content }
-  #   end
-  # end
-
   # GET /users/1
   # GET /users/1.json
   def show
@@ -80,14 +72,12 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
       if params[:id] != 'sign_out'
         @user = User.find(params[:id])
       end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:name, :password, :email, :usertype, :university_id)
     end
