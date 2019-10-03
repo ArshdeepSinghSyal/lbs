@@ -10,16 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2019_10_01_063046) do
-=======
 ActiveRecord::Schema.define(version: 2019_10_03_025105) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
->>>>>>> master
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
@@ -56,6 +52,11 @@ ActiveRecord::Schema.define(version: 2019_10_03_025105) do
     t.index ["library_id"], name: "index_lib_books_on_library_id"
   end
 
+  create_table "librarians", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "libraries", force: :cascade do |t|
     t.integer "university_id"
     t.string "location"
@@ -78,6 +79,11 @@ ActiveRecord::Schema.define(version: 2019_10_03_025105) do
     t.datetime "updated_at", null: false
     t.index ["lib_book_id"], name: "index_reservations_on_lib_book_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "universities", force: :cascade do |t|
