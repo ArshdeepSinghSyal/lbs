@@ -4,9 +4,12 @@ class UniversitiesController < ApplicationController
   # GET /universities
   # GET /universities.json
   def index
-    @universities = University.all
+    if current_user.usertype == "admin"
+      @universities = University.all
+    else
+      @universities = University.where("id = ?", current_user.university_id)
+    end
   end
-
   # GET /universities/1
   # GET /universities/1.json
   def show
