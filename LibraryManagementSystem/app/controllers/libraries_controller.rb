@@ -5,7 +5,7 @@ class LibrariesController < ApplicationController
   # GET /libraries
   # GET /libraries.json
   def index
-      @libraries = @university.libraries
+    @libraries = @university.libraries
   end
 
   # GET /libraries/1
