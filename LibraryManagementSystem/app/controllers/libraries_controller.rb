@@ -5,7 +5,11 @@ class LibrariesController < ApplicationController
   # GET /libraries
   # GET /libraries.json
   def index
-    @libraries = @university.libraries
+    if current_user.usertype == "admin"
+      @users = Library.all
+    else
+      @libraries = @university.libraries
+    end
   end
 
   # GET /libraries/1

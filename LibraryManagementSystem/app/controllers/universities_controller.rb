@@ -4,7 +4,14 @@ class UniversitiesController < ApplicationController
   # GET /universities
   # GET /universities.json
   def index
-    @universities = University.all
+    @universities = []
+    @list_all = University.all
+    @list_all.each do |university|
+      if !university.name.eql?"default"
+        @universities.append(university)
+      end
+    end
+    @universities
   end
 
   # GET /universities/1
