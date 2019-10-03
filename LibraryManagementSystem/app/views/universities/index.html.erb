@@ -32,4 +32,6 @@
 
 <br>
 
-<%= link_to 'New University', new_university_path %>
+<% if current_user.usertype == "admin" %>
+  <%= link_to 'New University', new_university_path %>
+<% end %>
