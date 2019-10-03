@@ -12,14 +12,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # def approve(user)
-  #   respond_to do |format|
-  #     # user.update_attributes(:is_approved => 1)
-  #     format.html { redirect_to users_url, notice: 'User was successfully approved.' }
-  #     format.json { head :no_content }
-  #   end
-  # end
-
   # GET /users/1
   # GET /users/1.json
   def show
@@ -28,6 +20,17 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @libraries = []
+    if params[:university_id].present?
+      @libraries = University.find(params[:university_id]).libraries
+    end
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: {libraries: @libraries}
+        }
+      end
+    end
   end
 
   # GET /users/1/edit
@@ -89,6 +92,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :password, :email, :usertype, :university_id)
+      params.require(:user).permit(:name, :password, :email, :usertype, :university_id, :library_id)
     end
 end

@@ -2,7 +2,6 @@
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
-
   <div class="field">
     <%= f.label :name %>
     <%= f.text_field :name %>
@@ -28,12 +27,20 @@
 
   <div class="field">
     <%= f.label :usertype %>
-    <%= f.select :usertype, [['Librarian','librarian'], ['Student - Doctoral (PhD)','studentPhD'],['Student - Grad','studentG'],['Student - Undergrad','studentUG']], :prompt => 'Select One'%>
+    <%= f.select(:usertype, [['Librarian','librarian'], ['Student - Doctoral (PhD)','studentPhD'],['Student - Grad','studentG'],['Student - Undergrad','studentUG']], {:prompt => 'Select One'}, {:onchange => "if(this.options[this.selectedIndex].value == 'librarian') { $('#Library_div')[0].style.display = 'inline';} else { $('#Library_div')[0].style.display = 'none';}"}) %>
   </div><br />
 
   <div class="field">
-    <%= f.label :Universities %>
-    <%= select("user", "university_id", University.all.collect{ |c| [ c.name, c.id] })  %>
+    <div class="field">
+      <%= f.label :Universities %>
+      <%= f.select(:university_id, University.all.reject { |u| u.name == "default" }.collect{ |c| [ c.name , c.id] }, {:prompt => 'Select One'}) %>
+    </div>
+  </div>
+
+  <div id="Library_div" style="display:none;"<%= f.label :library %><br />
+  <%#= select_tag :library_id,prompt: "Select Library", class: "form-control" %>
+  <%= f.select(:library_id, [], {:prompt => 'Select One'}) %>
+
   </div>
 
   <div class="actions">
@@ -41,4 +48,30 @@
   </div>
 <% end %>
 
+
+
+<script>
+  var seperator = "$$"
+    <%  @all_libraries = {}
+        University.all.each do |university|
+          @all_libraries[university.id] = []
+          university.libraries.each do |library|
+            @all_libraries[university.id].append(library.name.to_s + "$$" + library.id.to_s)
+          end
+        end
+    %>
+    libraries =  <%=  @all_libraries.to_json.html_safe %>
+    function update_values() {
+        $("#user_library_id").empty();
+        var selected_university = $("#user_university_id").val();
+        if (selected_university.length > 0) {
+            libraries_to_show = libraries[selected_university]
+            libraries_to_show.forEach(function(library) {
+                $("#user_library_id").append(new Option(library.split(seperator)[0], library.split(seperator)[1]));
+            })
+        }
+
+    }
+    $("#user_university_id").change(function() {update_values()})
+</script>
 <%= render "devise/shared/links" %>
