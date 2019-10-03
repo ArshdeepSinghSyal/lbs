@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Books</h1>
-
+<% if current_user.usertype == "admin" %>
 <%= form_tag(books_path, :method => 'get') do %>
   Title <%= text_field_tag :title, params[:title]  %>
   Author <%= text_field_tag :author, params[:author] %>
@@ -26,23 +26,26 @@
   </tr>
 
   <tbody>
-    <% @books.each do |book| %>
-      <tr>
-        <td><%= book.isbn %></td>
-        <td><%= book.title %></td>
-        <td><%= book.author %></td>
-        <td><%= book.language %></td>
-        <td><%= book.published %></td>
-        <td><%= book.edition %></td>
-        <td><%= book.subject %></td>
-        <td><%= link_to 'Show', book %></td>
-        <td><%= link_to 'Edit', edit_book_path(book) %></td>
-        <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+      <% @books.each do |book| %>
+        <tr>
+          <td><%= book.isbn %></td>
+          <td><%= book.title %></td>
+          <td><%= book.author %></td>
+          <td><%= book.language %></td>
+          <td><%= book.published %></td>
+          <td><%= book.edition %></td>
+          <td><%= book.subject %></td>
+          <td><%= link_to 'Show', book %></td>
+          <td><%= link_to 'Edit', edit_book_path(book) %></td>
+          <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
   </tbody>
 </table>
 
 <br>
 
 <%= link_to 'New Book', new_book_path %>
+  <%else %>
+  <h3>You don't have permission to view this page</h3>
+  <% end %>

@@ -1,7 +1,15 @@
 class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
-  before_action(:get_library)
-  before_action(:get_university)
+  before_action :get_library
+  before_action :get_university
+  before_action :validate_checkout, only: [:create, :update]
+  after_action :notify_next, only: [:update]
+  # Reservation status
+  # 0 => Returned
+  # 1 => Checked out
+  # 2 => Requested
+  # 5$ fine on each day
+
 
   # GET /reservations
   # GET /reservations.json
@@ -9,7 +17,24 @@ class ReservationsController < ApplicationController
     @reservations = []
     @library.lib_books.each do |lib_book|
       lib_book.reservations.each do |reservation|
-        @reservations.push(reservation)
+        if reservation.status == 0 || reservation.status == 1
+          total_days = (reservation.status == 1) ?
+                           (Date.parse(Time.now.to_s) - Date.parse(reservation.checkoutstamp.to_s)).to_i
+                           : (Date.parse(reservation.returnstamp.to_s) - Date.parse(reservation.checkoutstamp.to_s)).to_i
+          extra_days = 0
+          allowed_days = @library.max_days
+          if total_days > allowed_days
+            extra_days = total_days - allowed_days
+          end
+          reservation.fine = extra_days * @library.fine
+        end
+        if current_user.usertype == "admin" || current_user.usertype == "librarian"
+          @reservations.push(reservation)
+        else
+          if reservation.user_id.eql? current_user.id
+            @reservations.push(reservation)
+          end
+        end
       end
     end
     # @library.lib_books
@@ -33,7 +58,13 @@ class ReservationsController < ApplicationController
   # POST /reservations.json
   def create
     @reservation = Reservation.new(reservation_params)
-
+    if @reservation.status == 1
+      @reservation.checkoutstamp = Time.now()
+    elsif @reservation.status == 2
+      @reservation.requeststamp = Time.now()
+    elsif @reservation.status == 3
+      @reservation.returnstamp = Time.now()
+    end
     respond_to do |format|
       if @reservation.save
         format.html { redirect_to university_library_reservations_path, notice: 'Reservation was successfully created.' }
@@ -43,6 +74,7 @@ class ReservationsController < ApplicationController
         format.json { render json: @reservation.errors, status: :unprocessable_entity }
       end
     end
+
   end
 
   # PATCH/PUT /reservations/1
@@ -86,5 +118,50 @@ class ReservationsController < ApplicationController
 
     def get_university
       @university = University.find(params[:university_id])
+    end
+
+    def validate_checkout
+      #Only if check-out is attempted
+      if reservation_params[:status].eql?"1"
+        @book_limit = -1
+        if current_user.usertype == 'studentUG'
+          @book_limit = @university.ug_books_limit
+        elsif current_user.usertype == 'studentG'
+          @book_limit = @university.grad_books_limit
+        elsif current_user.usertype == 'studentPhD'
+          @book_limit = @university.phd_books_limit
+        end
+        @num_existing_reservations = Reservation.where(:user_id => current_user.id).where(:status => 1).count()
+        if @num_existing_reservations >= @book_limit
+          redirect_to university_library_lib_books_path, :notice => "Max limit (" + @book_limit.to_s + ") for checking out books reached"
+        end
+      end
+    end
+
+    def notify_next
+      #Only if book is returned
+      if reservation_params[:status].eql?"0"
+        @next_requester_query = Reservation.where(:status => 2).where(:lib_book => reservation_params[:lib_book_id]).order(:requeststamp)
+        @next_requester_query.all.each do |next_requester|
+          if !next_requester.eql?nil
+            num_existing_reservations = Reservation.where(:user_id => next_requester.user_id).where(:status => 1).count()
+            next_requester_user = User.find_by_id(next_requester.user_id)
+            next_requester_university = University.find(next_requester_user.university_id)
+            if next_requester_user.usertype == 'studentUG'
+              next_requester_book_limit = next_requester_university.ug_books_limit
+            elsif next_requester_user.usertype == 'studentG'
+              next_requester_book_limit = next_requester_university.grad_books_limit
+            elsif next_requester_user.usertype == 'studentPhD'
+              next_requester_book_limit = next_requester_university.phd_books_limit
+            end
+            if num_existing_reservations < next_requester_book_limit
+              next_requester.update(:checkoutstamp => Time.now(), :status => 1)
+              @book_title = Book.find(LibBook.find(reservation_params[:lib_book_id]).book_id).title
+              UserMailer.mailer(next_requester_user.email, next_requester_user.name, @book_title, @library.name).deliver
+              break
+            end
+          end
+        end
+      end
     end
 end

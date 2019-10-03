@@ -9,5 +9,5 @@ class Book < ApplicationRecord
   validates :edition, :presence => true, numericality: true
   validates :image, :presence => true
   validates :subject, :presence => true
-  validates :is_special_collection_item, :presence => true
+  validates_inclusion_of :is_special_collection_item, in: [true, false]
 end
