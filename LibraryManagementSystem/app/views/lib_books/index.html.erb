@@ -42,11 +42,12 @@
           <% else %>
             <td><%= button_to 'Request', {:controller => "reservations", :action => "create", params: {reservation: {:lib_book_id=> lib_book.id, :user_id=> current_user.id, :status=>2 }} }, {:method=>:post}  %></td>
           <% end %>
-
-          <% if @bookmark.eql?nil %>
-            <td><%= button_to 'Bookmark', {:controller => "bookmarks", :action => "create", params: {bookmark: {:lib_book_id=> lib_book.id, :user_id=> current_user.id}} }, {:method=>:post}  %></td>
-          <% else %>
-            <td><%= button_to 'Remove Bookmark', university_library_bookmark_path(@university, @library, @bookmark), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <%  if current_user.usertype == "studentG" || current_user.usertype == "studentUG" || current_user.usertype == "studentPhD" %>
+            <% if @bookmark.eql?nil %>
+              <td><%= button_to 'Bookmark', {:controller => "bookmarks", :action => "create", params: {bookmark: {:lib_book_id=> lib_book.id, :user_id=> current_user.id}} }, {:method=>:post}  %></td>
+            <% else %>
+              <td><%= button_to 'Remove Bookmark', university_library_bookmark_path(@university, @library, @bookmark), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
           <% end %>
         <% end %>
         <% if current_user.usertype == "librarian" || current_user.usertype == "admin" %>
