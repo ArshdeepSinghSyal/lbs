@@ -1,0 +1,733 @@
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "admins"[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "admins" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "books"[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE "books" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "title" varchar, "language" varchar, "published" date, "edition" float, "image" blob, "subject" varchar, "summary" text, "is_special_collection_item" boolean, "author" varchar, "isbn" varchar)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_books_on_isbn" ON "books" ("isbn")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "lib_books"[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE "lib_books" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "library_id" integer, "book_id" integer, "quantity" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX "index_lib_books_on_book_id" ON "lib_books" ("book_id")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX "index_lib_books_on_library_id" ON "lib_books" ("library_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "librarians"[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE TABLE "librarians" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "libraries"[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE "libraries" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "university_id" integer, "location" varchar, "name" varchar, "max_days" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX "index_libraries_on_university_id" ON "libraries" ("university_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "reservations"[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE "reservations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "lib_book_id" integer, "user_id" integer, "status" integer, "checkoutstamp" datetime, "returnstamp" datetime, "requeststamp" datetime, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX "index_reservations_on_lib_book_id" ON "reservations" ("lib_book_id")[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX "index_reservations_on_user_id" ON "reservations" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "students"[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE "students" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "universities"[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE "universities" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "ug_books_limit" integer, "grad_books_limit" integer, "phd_books_limit" integer)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime, "remember_created_at" datetime, "usertype" varchar, "is_approved" integer, "university_id" integer, "name" varchar)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX "index_users_on_university_id" ON "users" ("university_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "usertypes"[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE "usertypes" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "usertype" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20190929205743)[0m
+  [1m[35m (0.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20190925211615),
+(20190928192049),
+(20190926230036),
+(20190924042748),
+(20190920214021),
+(20190929205159),
+(20190920204104),
+(20190925224319),
+(20190927172254),
+(20190920222032),
+(20190924025622),
+(20190927214543),
+(20190928032705),
+(20190928032907),
+(20190924050628),
+(20190924015612);
+
+[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "test"], ["created_at", "2019-09-30 01:54:21.090533"], ["updated_at", "2019-09-30 01:54:21.090533"]]
+  [1m[35m (1.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (1.1ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.178858', '2019-09-30 01:54:21.178858', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.178858', '2019-09-30 01:54:21.178858', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.180412', '2019-09-30 01:54:21.180412', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.180412', '2019-09-30 01:54:21.180412', 298486374)[0m
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.410155', '2019-09-30 01:54:21.410155', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.410155', '2019-09-30 01:54:21.410155', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.410729', '2019-09-30 01:54:21.410729', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.410729', '2019-09-30 01:54:21.410729', 298486374)[0m
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.421553', '2019-09-30 01:54:21.421553', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.421553', '2019-09-30 01:54:21.421553', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.422247', '2019-09-30 01:54:21.422247', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.422247', '2019-09-30 01:54:21.422247', 298486374)[0m
+  [1m[35m (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.433179', '2019-09-30 01:54:21.433179', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.433179', '2019-09-30 01:54:21.433179', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.433658', '2019-09-30 01:54:21.433658', 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.433658', '2019-09-30 01:54:21.433658', 298486374)[0m
+  [1m[35m (1.3ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.443872', '2019-09-30 01:54:21.443872', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.443872', '2019-09-30 01:54:21.443872', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.444317', '2019-09-30 01:54:21.444317', 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.444317', '2019-09-30 01:54:21.444317', 298486374)[0m
+  [1m[35m (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.9ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.455971', '2019-09-30 01:54:21.455971', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.455971', '2019-09-30 01:54:21.455971', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.456456', '2019-09-30 01:54:21.456456', 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.456456', '2019-09-30 01:54:21.456456', 298486374)[0m
+  [1m[35m (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.471492', '2019-09-30 01:54:21.471492', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.471492', '2019-09-30 01:54:21.471492', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.472490', '2019-09-30 01:54:21.472490', 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.472490', '2019-09-30 01:54:21.472490', 298486374)[0m
+  [1m[35m (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.486164', '2019-09-30 01:54:21.486164', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.486164', '2019-09-30 01:54:21.486164', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.486985', '2019-09-30 01:54:21.486985', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.486985', '2019-09-30 01:54:21.486985', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.497160', '2019-09-30 01:54:21.497160', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.497160', '2019-09-30 01:54:21.497160', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.497661', '2019-09-30 01:54:21.497661', 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.497661', '2019-09-30 01:54:21.497661', 298486374)[0m
+  [1m[35m (0.9ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.7ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.509509', '2019-09-30 01:54:21.509509', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.4ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.509509', '2019-09-30 01:54:21.509509', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.510028', '2019-09-30 01:54:21.510028', 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.510028', '2019-09-30 01:54:21.510028', 298486374)[0m
+  [1m[35m (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.556154', '2019-09-30 01:54:21.556154', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.556154', '2019-09-30 01:54:21.556154', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.556680', '2019-09-30 01:54:21.556680', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.556680', '2019-09-30 01:54:21.556680', 298486374)[0m
+  [1m[35m (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.567499', '2019-09-30 01:54:21.567499', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.567499', '2019-09-30 01:54:21.567499', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.567999', '2019-09-30 01:54:21.567999', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.567999', '2019-09-30 01:54:21.567999', 298486374)[0m
+  [1m[35m (1.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.5ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.581350', '2019-09-30 01:54:21.581350', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.581350', '2019-09-30 01:54:21.581350', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.581915', '2019-09-30 01:54:21.581915', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.581915', '2019-09-30 01:54:21.581915', 298486374)[0m
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.591385', '2019-09-30 01:54:21.591385', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.591385', '2019-09-30 01:54:21.591385', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.592610', '2019-09-30 01:54:21.592610', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.592610', '2019-09-30 01:54:21.592610', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.3ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.605244', '2019-09-30 01:54:21.605244', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.605244', '2019-09-30 01:54:21.605244', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.605675', '2019-09-30 01:54:21.605675', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.605675', '2019-09-30 01:54:21.605675', 298486374)[0m
+  [1m[35m (0.9ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.619037', '2019-09-30 01:54:21.619037', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.619037', '2019-09-30 01:54:21.619037', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.619533', '2019-09-30 01:54:21.619533', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.619533', '2019-09-30 01:54:21.619533', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.632361', '2019-09-30 01:54:21.632361', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.632361', '2019-09-30 01:54:21.632361', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.632863', '2019-09-30 01:54:21.632863', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.632863', '2019-09-30 01:54:21.632863', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.7ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.645129', '2019-09-30 01:54:21.645129', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.645129', '2019-09-30 01:54:21.645129', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.646091', '2019-09-30 01:54:21.646091', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.646091', '2019-09-30 01:54:21.646091', 298486374)[0m
+  [1m[35m (0.8ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.6ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.659963', '2019-09-30 01:54:21.659963', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.659963', '2019-09-30 01:54:21.659963', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.660404', '2019-09-30 01:54:21.660404', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.660404', '2019-09-30 01:54:21.660404', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.672713', '2019-09-30 01:54:21.672713', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.672713', '2019-09-30 01:54:21.672713', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.673131', '2019-09-30 01:54:21.673131', 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.673131', '2019-09-30 01:54:21.673131', 298486374)[0m
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.5ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.682159', '2019-09-30 01:54:21.682159', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.682159', '2019-09-30 01:54:21.682159', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.682597', '2019-09-30 01:54:21.682597', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.682597', '2019-09-30 01:54:21.682597', 298486374)[0m
+  [1m[35m (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.699241', '2019-09-30 01:54:21.699241', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.699241', '2019-09-30 01:54:21.699241', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.701007', '2019-09-30 01:54:21.701007', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.701007', '2019-09-30 01:54:21.701007', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.712047', '2019-09-30 01:54:21.712047', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.712047', '2019-09-30 01:54:21.712047', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.713069', '2019-09-30 01:54:21.713069', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.713069', '2019-09-30 01:54:21.713069', 298486374)[0m
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.727395', '2019-09-30 01:54:21.727395', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.727395', '2019-09-30 01:54:21.727395', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.728503', '2019-09-30 01:54:21.728503', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.728503', '2019-09-30 01:54:21.728503', 298486374)[0m
+  [1m[35m (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.744063', '2019-09-30 01:54:21.744063', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.744063', '2019-09-30 01:54:21.744063', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.744547', '2019-09-30 01:54:21.744547', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.744547', '2019-09-30 01:54:21.744547', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.757762', '2019-09-30 01:54:21.757762', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.757762', '2019-09-30 01:54:21.757762', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.758237', '2019-09-30 01:54:21.758237', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.758237', '2019-09-30 01:54:21.758237', 298486374)[0m
+  [1m[35m (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.771693', '2019-09-30 01:54:21.771693', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.771693', '2019-09-30 01:54:21.771693', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.772429', '2019-09-30 01:54:21.772429', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.772429', '2019-09-30 01:54:21.772429', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.783110', '2019-09-30 01:54:21.783110', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.783110', '2019-09-30 01:54:21.783110', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.783645', '2019-09-30 01:54:21.783645', 980190962)[0m
+  [1m[36mFixture Insert (0.6ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.783645', '2019-09-30 01:54:21.783645', 298486374)[0m
+  [1m[35m (0.9ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.5ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.797057', '2019-09-30 01:54:21.797057', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.797057', '2019-09-30 01:54:21.797057', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.797932', '2019-09-30 01:54:21.797932', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.797932', '2019-09-30 01:54:21.797932', 298486374)[0m
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.810834', '2019-09-30 01:54:21.810834', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.810834', '2019-09-30 01:54:21.810834', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.812287', '2019-09-30 01:54:21.812287', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.812287', '2019-09-30 01:54:21.812287', 298486374)[0m
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.825677', '2019-09-30 01:54:21.825677', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.825677', '2019-09-30 01:54:21.825677', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.826185', '2019-09-30 01:54:21.826185', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.826185', '2019-09-30 01:54:21.826185', 298486374)[0m
+  [1m[35m (0.9ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.839209', '2019-09-30 01:54:21.839209', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.839209', '2019-09-30 01:54:21.839209', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.839703', '2019-09-30 01:54:21.839703', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.839703', '2019-09-30 01:54:21.839703', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.852284', '2019-09-30 01:54:21.852284', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.852284', '2019-09-30 01:54:21.852284', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.853075', '2019-09-30 01:54:21.853075', 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.853075', '2019-09-30 01:54:21.853075', 298486374)[0m
+  [1m[35m (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.864763', '2019-09-30 01:54:21.864763', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.864763', '2019-09-30 01:54:21.864763', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.865349', '2019-09-30 01:54:21.865349', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.865349', '2019-09-30 01:54:21.865349', 298486374)[0m
+  [1m[35m (0.7ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.880842', '2019-09-30 01:54:21.880842', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.880842', '2019-09-30 01:54:21.880842', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.881743', '2019-09-30 01:54:21.881743', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.881743', '2019-09-30 01:54:21.881743', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.4ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.8ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.4ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.892444', '2019-09-30 01:54:21.892444', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.892444', '2019-09-30 01:54:21.892444', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.893031', '2019-09-30 01:54:21.893031', 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.893031', '2019-09-30 01:54:21.893031', 298486374)[0m
+  [1m[35m (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.907004', '2019-09-30 01:54:21.907004', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.907004', '2019-09-30 01:54:21.907004', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.907460', '2019-09-30 01:54:21.907460', 980190962)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.907460', '2019-09-30 01:54:21.907460', 298486374)[0m
+  [1m[35m (1.3ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.5ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (15.7ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.920105', '2019-09-30 01:54:21.920105', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.920105', '2019-09-30 01:54:21.920105', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.920613', '2019-09-30 01:54:21.920613', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.920613', '2019-09-30 01:54:21.920613', 298486374)[0m
+  [1m[35m (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.950970', '2019-09-30 01:54:21.950970', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.950970', '2019-09-30 01:54:21.950970', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.951789', '2019-09-30 01:54:21.951789', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.951789', '2019-09-30 01:54:21.951789', 298486374)[0m
+  [1m[35m (0.6ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.3ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.963121', '2019-09-30 01:54:21.963121', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.2ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.963121', '2019-09-30 01:54:21.963121', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.3ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.963690', '2019-09-30 01:54:21.963690', 980190962)[0m
+  [1m[36mFixture Insert (0.5ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.963690', '2019-09-30 01:54:21.963690', 298486374)[0m
+  [1m[35m (0.8ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.9ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.978563', '2019-09-30 01:54:21.978563', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.978563', '2019-09-30 01:54:21.978563', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.979024', '2019-09-30 01:54:21.979024', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.979024', '2019-09-30 01:54:21.979024', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixture Delete (0.2ms)[0m  [1m[31mDELETE FROM "reservations"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "users"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "books"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "universities"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "libraries"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "usertypes"[0m
+  [1m[36mFixture Delete (0.1ms)[0m  [1m[31mDELETE FROM "lib_books"[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.989855', '2019-09-30 01:54:21.989855', 980190962, 980190962, 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "reservations" ("status", "checkoutstamp", "returnstamp", "requeststamp", "created_at", "updated_at", "id", "lib_book_id", "user_id") VALUES (1, '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-27 17:45:43', '2019-09-30 01:54:21.989855', '2019-09-30 01:54:21.989855', 298486374, 298486374, 298486374)[0m
+  [1m[36mFixture Insert (0.0ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.990497', '2019-09-30 01:54:21.990497', 980190962)[0m
+  [1m[36mFixture Insert (0.1ms)[0m  [1m[32mINSERT INTO "users" ("created_at", "updated_at", "id") VALUES ('2019-09-30 01:54:21.990497', '2019-09-30 01:54:21.990497', 298486374)[0m
+  [1m[35m (0.4ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
