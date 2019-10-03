@@ -61,6 +61,8 @@
 </p>
 <%= link_to 'My Library Books', university_library_lib_books_url(@university, @library) %> |
 <%= link_to 'My Reservations', university_library_reservations_url(@university, @library) %> |
-<%= link_to 'My Bookmarks', university_library_bookmarks_url(@university, @library) %> |
+<% if current_user.usertype == "studentG" || current_user.usertype == "studentUG" || current_user.usertype == "studentPhD" %>
+  <%= link_to 'My Bookmarks', university_library_bookmarks_url(@university, @library) %> |
+<% end %>
 <%= link_to 'Edit', edit_university_library_path(@university, @library) %> |
 <%= link_to 'Back', university_libraries_path %>
