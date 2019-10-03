@@ -10,12 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 2019_10_01_063046) do
+=======
 ActiveRecord::Schema.define(version: 2019_10_03_025105) do
 
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+>>>>>>> master
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
@@ -52,11 +56,6 @@ ActiveRecord::Schema.define(version: 2019_10_03_025105) do
     t.index ["library_id"], name: "index_lib_books_on_library_id"
   end
 
-  create_table "librarians", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "libraries", force: :cascade do |t|
     t.integer "university_id"
     t.string "location"
@@ -81,11 +80,6 @@ ActiveRecord::Schema.define(version: 2019_10_03_025105) do
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
-  create_table "students", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "universities", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -107,6 +101,7 @@ ActiveRecord::Schema.define(version: 2019_10_03_025105) do
     t.integer "is_approved"
     t.integer "university_id"
     t.string "name"
+    t.integer "library_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["university_id"], name: "index_users_on_university_id"

@@ -20,6 +20,17 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @libraries = []
+    if params[:university_id].present?
+      @libraries = University.find(params[:university_id]).libraries
+    end
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: {libraries: @libraries}
+        }
+      end
+    end
   end
 
   # GET /users/1/edit
@@ -79,6 +90,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:name, :password, :email, :usertype, :university_id)
+      params.require(:user).permit(:name, :password, :email, :usertype, :university_id, :library_id)
     end
 end
