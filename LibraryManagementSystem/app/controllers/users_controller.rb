@@ -12,14 +12,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # def approve(user)
-  #   respond_to do |format|
-  #     # user.update_attributes(:is_approved => 1)
-  #     format.html { redirect_to users_url, notice: 'User was successfully approved.' }
-  #     format.json { head :no_content }
-  #   end
-  # end
-
   # GET /users/1
   # GET /users/1.json
   def show
@@ -45,9 +37,6 @@ class UsersController < ApplicationController
   def edit
   end
 
-  def myFunction
-    alert('test')
-  end
   # POST /users
   # POST /users.json
   def create
@@ -103,6 +92,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :password, :email, :usertype, :university_id)
+      params.require(:user).permit(:name, :password, :email, :usertype, :university_id, :library_id)
     end
 end
