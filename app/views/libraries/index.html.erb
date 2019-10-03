@@ -26,7 +26,9 @@
         <td></td>
         <td><%= link_to 'Books', university_library_lib_books_url(@university, library) %></td>
         <td><%= link_to 'Reservations', university_library_reservations_url(@university, library) %></td>
-        <td><%= link_to 'Bookmarks', university_library_bookmarks_url(@university, library) %></td>
+        <% if current_user.usertype == "studentG" || current_user.usertype == "studentUG" || current_user.usertype == "studentPhD" %>
+          <td><%= link_to 'Bookmarks', university_library_bookmarks_url(@university, library) %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
