@@ -25,7 +25,9 @@
         <td><%= link_to 'Destroy', university_library_path(@university, library), method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td></td>
         <td><%= link_to 'Books', university_library_lib_books_url(@university, library) %></td>
-        <td><%= link_to 'Reservations', university_library_reservations_url(@university, library) %></td>
+        <td><%= link_to 'All Reservations', university_library_reservations_url(@university, library, :category=>"all") %></td>
+        <td><%= link_to 'Current Reservations', university_library_reservations_url(@university, library, :category=>"current") %></td>
+        <td><%= link_to 'Overdue Reservations', university_library_reservations_url(@university, library, :category=>"overdue") %></td>
         <% if current_user.usertype == "studentG" || current_user.usertype == "studentUG" || current_user.usertype == "studentPhD" %>
           <td><%= link_to 'Bookmarks', university_library_bookmarks_url(@university, library) %></td>
         <% end %>

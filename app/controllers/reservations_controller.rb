@@ -2,6 +2,7 @@ class ReservationsController < ApplicationController
   before_action :set_reservation, only: [:show, :edit, :update, :destroy]
   before_action :get_library
   before_action :get_university
+  before_action :get_index_type, only: [:index]
   before_action :validate_checkout, only: [:create, :update]
   after_action :notify_next, only: [:update]
   # Reservation status
@@ -17,23 +18,19 @@ class ReservationsController < ApplicationController
     @reservations = []
     @library.lib_books.each do |lib_book|
       lib_book.reservations.each do |reservation|
-        if reservation.status == 0 || reservation.status == 1
-          total_days = (reservation.status == 1) ?
-                           (Date.parse(Time.now.to_s) - Date.parse(reservation.checkoutstamp.to_s)).to_i
-                           : (Date.parse(reservation.returnstamp.to_s) - Date.parse(reservation.checkoutstamp.to_s)).to_i
-          extra_days = 0
-          allowed_days = @library.max_days
-          if total_days > allowed_days
-            extra_days = total_days - allowed_days
+        if @category.eql?"overdue"
+          calculate_fine(reservation)
+          if reservation.fine > 0
+            add_reservation_to_index(reservation)
           end
-          reservation.fine = extra_days * @library.fine
-        end
-        if current_user.usertype == "admin" || current_user.usertype == "librarian"
-          @reservations.push(reservation)
-        else
-          if reservation.user_id.eql? current_user.id
-            @reservations.push(reservation)
+        elsif @category.eql?"current"
+          if reservation.status == 1 || reservation.status == 2
+            calculate_fine(reservation)
+            add_reservation_to_index(reservation)
           end
+        else #All
+          calculate_fine(reservation)
+          add_reservation_to_index(reservation)
         end
       end
     end
@@ -118,6 +115,38 @@ class ReservationsController < ApplicationController
 
     def get_university
       @university = University.find(params[:university_id])
+    end
+
+    def get_index_type
+      if params[:category].eql?nil
+        @category = "all"
+      else
+        @category = params[:category]
+      end
+    end
+
+    def calculate_fine(reservation)
+      if reservation.status == 0 || reservation.status == 1
+        total_days = (reservation.status == 1) ?
+                         (Date.parse(Time.now.to_s) - Date.parse(reservation.checkoutstamp.to_s)).to_i
+                         : (Date.parse(reservation.returnstamp.to_s) - Date.parse(reservation.checkoutstamp.to_s)).to_i
+        extra_days = 0
+        allowed_days = @library.max_days
+        if total_days > allowed_days
+          extra_days = total_days - allowed_days
+        end
+        reservation.fine = extra_days * @library.fine
+      end
+    end
+
+    def add_reservation_to_index(reservation)
+      if current_user.usertype == "admin" || current_user.usertype == "librarian"
+        @reservations.push(reservation)
+      else
+        if reservation.user_id.eql? current_user.id
+          @reservations.push(reservation)
+        end
+      end
     end
 
     def validate_checkout

@@ -1,7 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<h1>All Reservations</h1>
-<br>
+<h1><%= @category.capitalize %> Reservations</h1>
+<% if current_user.usertype == "studentG" %>
+  <h4> You are allowed to checkout a total of <%= @university.grad_books_limit %> books at any given time as per university rules </h4>
+<% elsif current_user.usertype == "studentUG" %>
+  <h4> You are allowed to checkout a total of <%= @university.ug_books_limit %> books at any given time as per university rules </h4>
+<% elsif current_user.usertype == "studentPhD" %>
+  <h4> You are allowed to checkout a total of <%= @university.phd_books_limit %> books at any given time as per university rules </h4>
+<% end %>
 A fine of $<%= @library.fine %> per day will be levied if a book is not returned within <%= @library.max_days %> days of issue.
 </br></br>
 <table>
