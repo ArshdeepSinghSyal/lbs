@@ -20,12 +20,16 @@ class ReservationsController < ApplicationController
       lib_book.reservations.each do |reservation|
         if @category.eql?"overdue"
           calculate_fine(reservation)
-          if reservation.fine > 0
+          if !reservation.fine.eql?nil and reservation.fine > 0
             add_reservation_to_index(reservation)
           end
         elsif @category.eql?"current"
-          if reservation.status == 1 || reservation.status == 2
+          if reservation.status == 1
             calculate_fine(reservation)
+            add_reservation_to_index(reservation)
+          end
+        elsif @category.eql?"requested"
+          if reservation.status == 2
             add_reservation_to_index(reservation)
           end
         else #All
@@ -153,16 +157,23 @@ class ReservationsController < ApplicationController
       #Only if check-out is attempted
       if reservation_params[:status].eql?"1"
         @book_limit = -1
-        if current_user.usertype == 'studentUG'
+        @student_type = ""
+        if current_user.usertype == 'librarian' || current_user.usertype == 'admin'
+          @student = User.find_by_id(@reservation.user_id)
+          @student_type = @student.usertype
+          @num_existing_reservations = Reservation.where(:user_id => @student.id).where(:status => 1).count()
+        else
+          @num_existing_reservations = Reservation.where(:user_id => current_user.id).where(:status => 1).count()
+        end
+        if current_user.usertype == 'studentUG' || @student_type == 'studentUG'
           @book_limit = @university.ug_books_limit
-        elsif current_user.usertype == 'studentG'
+        elsif current_user.usertype == 'studentG' || @student_type == 'studentG'
           @book_limit = @university.grad_books_limit
-        elsif current_user.usertype == 'studentPhD'
+        elsif current_user.usertype == 'studentPhD' || @student_type == 'studentPhD'
           @book_limit = @university.phd_books_limit
         end
-        @num_existing_reservations = Reservation.where(:user_id => current_user.id).where(:status => 1).count()
         if @num_existing_reservations >= @book_limit
-          redirect_to university_library_lib_books_path, :notice => "Max limit (" + @book_limit.to_s + ") for checking out books reached"
+          redirect_to university_library_lib_books_path, :notice => "Can't checkout the book, max limit (" + @book_limit.to_s + ") for checking out books reached"
         end
       end
     end

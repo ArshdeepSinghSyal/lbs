@@ -32,12 +32,11 @@
   <strong>Request Time:</strong>
   <%= @reservation.requeststamp %>
 </p>
-<% if @reservation.status == 1 %>
+<% if @reservation.status == 1 && current_user.id == @reservation.user_id %>
   <%= link_to 'Return book', {:controller => "reservations", :action => "update", params: {reservation: {:lib_book_id=> @reservation.lib_book.id, :user_id=> current_user.id, :status=> 0, :returnstamp => Time.now() }} }, {:method=>:put}  %> |
-<% elsif @reservation.status == 2 %>
+<% elsif @reservation.status == 2 && current_user.id == @reservation.user_id %>
   <%= link_to 'Cancel request', university_library_reservation_path(@university, @library, @reservation), method: :delete, data: { confirm: 'Are you sure?' } %> |
 <% end %>
-
 <%= link_to 'All Reservations', university_library_reservations_url(@university, @library, :category=>"all") %> |
 <%= link_to 'Current Reservations', university_library_reservations_url(@university, @library, :category=>"current") %> |
 <%= link_to 'Overdue Reservations', university_library_reservations_url(@university, @library, :category=>"overdue") %>
