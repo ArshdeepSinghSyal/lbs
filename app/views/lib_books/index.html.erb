@@ -58,8 +58,8 @@
             <% end %>
           <% end %>
         <% end %>
-        <% if current_user.usertype == "librarian" || current_user.usertype == "admin" %>
-          <td><%= link_to 'Show', university_library_lib_book_path(@university, @library, lib_book) %></td>
+        <td><%= link_to 'Show', university_library_lib_book_path(@university, @library, lib_book) %></td>
+        <% if (current_user.usertype == "librarian" && current_user.library_id == @library.id) || current_user.usertype == "admin" %>
           <td><%= link_to 'Edit', edit_university_library_lib_book_path(@university, @library, lib_book) %></td>
           <td><%= link_to 'Destroy', university_library_lib_book_path(@university, @library, lib_book), method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
@@ -70,7 +70,7 @@
 
 <br>
 
-<% if current_user.usertype == "librarian" || current_user.usertype == "admin" %>
+<% if (current_user.usertype == "librarian" && current_user.library_id == @library.id) || current_user.usertype == "admin" %>
   <%= link_to 'Add Book To Library', new_university_library_lib_book_path %> |
 <% end %>
 
