@@ -45,4 +45,11 @@ class BooksControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to books_url
   end
+
+  ######################## NEWLY ADDED TEST CASES ######################
+  # test "should have unique ISBN for each book" do
+  #     patch book_url(@book), params: { book: {  } }
+  #     assert_redirected_to book_url(@book)
+  #   end
+  #
 end
