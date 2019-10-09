@@ -6,7 +6,8 @@ To test or use the deployed app on heroku visit https://librarymanagementsystema
 
 ### Admin Credentials:
 
-Email: admin@lms.com 
+Email: admin@lms.com
+
 Password: password
 
 (Please do not update admin password while editing other attributes of Admin's profile. Else the admin won't be able to login with the same credentials. Appreciate your consideration!)
@@ -31,16 +32,12 @@ rake db:migrate
 rake db:seed
 ```
 
-3. Visit localhost:3000 to use the app.
+3. Visit http://localhost:3000 to use the app.
 
 
 The first page you visit when you open the library management system web app:
 
 <img width="1440" alt="Screenshot 2019-10-02 at 11 44 34 PM" src="https://media.github.ncsu.edu/user/12952/files/e0ad5880-e572-11e9-9259-5e108dc5591c">
-
-To log in as admin:
-
-Admin Credentials:-    Email: admin@lms.com Password: password
 
 <img width="1440" alt="Screenshot 2019-10-02 at 11 45 21 PM" src="https://media.github.ncsu.edu/user/12952/files/e145ef00-e572-11e9-8a01-ad78ea311ee0">
 
