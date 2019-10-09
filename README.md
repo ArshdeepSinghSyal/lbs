@@ -12,6 +12,8 @@ Password: password
 
 (Please do not update admin password while editing other attributes of Admin's profile. Else the admin won't be able to login with the same credentials. Appreciate your consideration!)
 
+### Testing Implemented For Books controller and model
+
 ### Prerequisites
 
 Steps to run the project on your machine:
