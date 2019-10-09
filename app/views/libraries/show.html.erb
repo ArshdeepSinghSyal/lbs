@@ -63,6 +63,11 @@
 <%= link_to 'All Reservations', university_library_reservations_url(@university, @library, :category=>"all") %> |
 <%= link_to 'Current Reservations', university_library_reservations_url(@university, @library, :category=>"current") %> |
 <%= link_to 'Overdue Reservations', university_library_reservations_url(@university, @library, :category=>"overdue") %> |
+<% if current_user.usertype == "librarian" && current_user.library_id == @library.id %>
+  <%= link_to 'Approvals', university_library_reservations_url(@university, @library, :category=>"requested") %> |
+<% elsif current_user.usertype == "studentG" || current_user.usertype == "studentUG" || current_user.usertype == "studentPhD"%>
+  <%= link_to 'Requested', university_library_reservations_url(@university, @library, :category=>"requested") %> |
+<% end %>
 <% if current_user.usertype == "studentG" || current_user.usertype == "studentUG" || current_user.usertype == "studentPhD" %>
   <%= link_to 'My Bookmarks', university_library_bookmarks_url(@university, @library) %> |
 <% end %>

@@ -19,15 +19,17 @@ A fine of $<%= @library.fine %> per day will be levied if a book is not returned
       <% end %>
       <th>Title</th>
       <th>Status</th>
-      <th>Checkout Time</th>
-      <th>Return Time</th>
+      <% if !@category.eql?"requested" %>
+        <th>Checkout Time</th>
+        <th>Return Time</th>
+        <th>Overdue Fine</th>
+      <% end %>
       <th>Request Time</th>
-      <th>Overdue Fine</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
-  <tbody>
+  <tbody align="center">
     <% @reservations.each do |reservation| %>
       <tr>
         <% if current_user.usertype == "admin" || current_user.usertype == "librarian"
@@ -46,14 +48,18 @@ A fine of $<%= @library.fine %> per day will be levied if a book is not returned
         <% else %>
           <td> Unknown </td>
         <% end %>
-        <td><%= reservation.checkoutstamp %></td>
-        <td><%= reservation.returnstamp %></td>
+        <% if !@category.eql?"requested" %>
+          <td><%= reservation.checkoutstamp %></td>
+          <td><%= reservation.returnstamp %></td>
+          <td><%= reservation.fine %></td>
+        <% end %>
         <td><%= reservation.requeststamp %></td>
-        <td><%= reservation.fine %></td>
-
         <td><%= link_to 'View Details', university_library_reservation_path(@university, @library, reservation) %></td>
         <% if reservation.status == 2 %>
           <td><%= link_to 'Destroy', university_library_reservation_path(@university, @library, reservation), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+        <% if reservation.status == 2 && current_user.usertype == "librarian" && current_user.library_id == @library.id %>
+          <td><%= link_to 'Approve', {:controller => "reservations", :action => "update", :id=> reservation.id, params: {reservation: {:lib_book_id=> reservation.lib_book.id, :status=> 1, :checkoutstamp => Time.now() }} }, {:method=>:put}  %></td>
         <% end %>
       </tr>
     <% end %>
