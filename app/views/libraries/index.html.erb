@@ -21,7 +21,11 @@
         <td><%= library.max_days %></td>
         <td><%= library.fine %></td>
         <td><%= link_to 'Show', university_library_path(@university, library) %></td>
-        <td><%= link_to 'Edit', edit_university_library_path(@university, library) %></td>
+        <% if (current_user.usertype == "librarian" && current_user.library_id == library.id) || current_user.usertype == "admin" %>
+          <td><%= link_to 'Edit', edit_university_library_path(@university, library) %></td>
+        <% else %>
+          <td></td>
+        <% end %>
         <td><%= link_to 'Destroy', university_library_path(@university, library), method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td></td>
         <td><%= link_to 'Books', university_library_lib_books_url(@university, library) %></td>

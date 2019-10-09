@@ -71,5 +71,7 @@
 <% if current_user.usertype == "studentG" || current_user.usertype == "studentUG" || current_user.usertype == "studentPhD" %>
   <%= link_to 'My Bookmarks', university_library_bookmarks_url(@university, @library) %> |
 <% end %>
-<%= link_to 'Edit', edit_university_library_path(@university, @library) %> |
+<% if (current_user.usertype == "librarian" && current_user.library_id == @library.id) || current_user.usertype == "admin" %>
+  <%= link_to 'Edit', edit_university_library_path(@university, @library) %> |
+<% end %>
 <%= link_to 'Back', university_libraries_path %>
