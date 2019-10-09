@@ -2,30 +2,44 @@
 
 ## LibraryManagementSystem
 
-To use the deployed app on heroku visit `https://librarymanagementsystemaar.herokuapp.com`
+To test or use the deployed app on heroku visit https://librarymanagementsystemaar.herokuapp.com
 
+### Admin Credentials:
+
+Email: admin@lms.com
+
+Password: password
+
+(Please do not update admin password while editing other attributes of Admin's profile. Else the admin won't be able to login with the same credentials. Appreciate your consideration!)
+
+### Testing Implemented For Books controller and model
+
+### Prerequisites
 
 Steps to run the project on your machine:
 
 ```git clone https://github.ncsu.edu/asyal/LibraryManagementSystem.git```
 
-```rails db:migrate```
+Please make sure you do the following once you have cloned the repository to your local machine:
 
-Visit localhost:3000 to use the app.
+1. Install postgresql on your MAC using the following command in your RubyMine Terminal.
+```
+brew services start postgresql
+```
+2. Run the following commands to get all the dependencies and migrate changes in your database.
+```
+bundle install
+bundle update
+rake db:migrate
+rake db:seed
+```
 
+3. Visit http://localhost:3000 to use the app.
 
-Admin Credentials:
-
-Email: admin@lms.com 
-Password: password
 
 The first page you visit when you open the library management system web app:
 
 <img width="1440" alt="Screenshot 2019-10-02 at 11 44 34 PM" src="https://media.github.ncsu.edu/user/12952/files/e0ad5880-e572-11e9-9259-5e108dc5591c">
-
-To log in as admin:
-
-Admin Credentials:-    Email: admin@lms.com Password: password
 
 <img width="1440" alt="Screenshot 2019-10-02 at 11 45 21 PM" src="https://media.github.ncsu.edu/user/12952/files/e145ef00-e572-11e9-8a01-ad78ea311ee0">
 
